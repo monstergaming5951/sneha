@@ -8,12 +8,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
 
 <style>
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:'Poppins',sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
 
 body{
   min-height:100vh;
@@ -34,11 +29,9 @@ body{
   box-shadow:0 20px 40px rgba(0,0,0,.25);
 }
 
-/* HEADINGS */
 h1{color:#ff2f6d;margin-bottom:5px;}
 h2{font-weight:400;color:#fff;margin-bottom:16px;}
 
-/* IMAGE */
 .slider-box{
   width:100%;
   border-radius:22px;
@@ -54,7 +47,6 @@ h2{font-weight:400;color:#fff;margin-bottom:16px;}
   display:block;
 }
 
-/* LOVE TEXT */
 .love-text{
   margin-top:14px;
   padding:14px;
@@ -67,7 +59,6 @@ h2{font-weight:400;color:#fff;margin-bottom:16px;}
   text-shadow:0 2px 6px rgba(0,0,0,.25);
 }
 
-/* BUTTONS */
 .buttons{
   display:flex;
   justify-content:center;
@@ -109,7 +100,6 @@ button{
   margin-top:12px;
 }
 
-/* POPUP */
 .popup{
   position:fixed;
   inset:0;
@@ -138,7 +128,6 @@ button{
   border-radius:30px;
 }
 
-/* GAME */
 .game-area{
   position:relative;
   height:260px;
@@ -153,11 +142,8 @@ button{
   animation:fly 3s linear forwards;
 }
 
-@keyframes fly{
-  to{bottom:300px;}
-}
+@keyframes fly{to{bottom:300px;}}
 
-/* QUIZ */
 .quiz-btn{
   width:100%;
   margin:8px 0;
@@ -171,18 +157,6 @@ button{
   background:#4CAF50;
   color:white;
   border:none;
-}
-
-/* BLAST */
-.blast{
-  position:absolute;
-  font-size:20px;
-  animation:pop 1s forwards;
-}
-
-@keyframes pop{
-  0%{transform:scale(1);opacity:1}
-  100%{transform:scale(2);opacity:0}
 }
 </style>
 </head>
@@ -219,6 +193,12 @@ button{
 </div>
 
 <script>
+const yes=document.getElementById("yes");
+const no=document.getElementById("no");
+const slider=document.getElementById("slider");
+const popup=document.getElementById("popup");
+const content=document.getElementById("popupContent");
+
 /* MUSIC */
 document.addEventListener("click",()=>{
   document.getElementById("bgMusic").play().catch(()=>{});
@@ -233,8 +213,6 @@ setInterval(()=>{
 },3000);
 
 /* POPUP */
-const popup=document.getElementById("popup");
-const content=document.getElementById("popupContent");
 function openPopup(html){content.innerHTML=html;popup.style.display="flex";}
 function closePopup(){popup.style.display="none";}
 
@@ -245,11 +223,23 @@ yes.onclick=()=>openPopup(`
 <button class="okay" onclick="closePopup()">OKAY</button>
 `);
 
-/* NO */
-let noCount=0;
-no.onmouseover=e=>{
-  noCount++;
-  e.target.style.transform=`translate(${Math.random()*120-60}px,${Math.random()*60-30}px)`;
+/* NO — EXACTLY AS YOU ASKED */
+let noClicks=0;
+no.onclick=(e)=>{
+  noClicks++;
+  if(noClicks===1){
+    e.target.style.transform=
+      `translate(${Math.random()*140-70}px,${Math.random()*80-40}px)`;
+  }else if(noClicks===2){
+    openPopup(`
+      <h3>HOW DARE YOU REJECTING MY OFFER!? 😾</h3>
+      <p>
+        Its just for formality 😽<br>
+        Option NO is invalid 🥰
+      </p>
+      <button class="okay" onclick="closePopup()">OKAY 😭</button>
+    `);
+  }
 };
 
 /* HEART GAME */
@@ -271,18 +261,18 @@ function startHeartGame(){
     h.style.left=Math.random()*90+"%";
     h.onclick=()=>{
       caught++;
-      counter.innerText=`Hearts: ${caught} / 3`;
+      counter.innerText=\`Hearts: \${caught} / 3\`;
       h.remove();
       if(caught===3){
         clearInterval(interval);
-        setTimeout(()=>startQuiz(),400);
+        setTimeout(startQuiz,400);
       }
     };
     area.appendChild(h);
   },700);
 }
 
-/* QUIZ — GUARANTEED 5/5 */
+/* QUIZ */
 const quiz=[
  {q:"Who loves me more?",o:["Sneha","Bubu","Sonai"],type:"any"},
  {q:"What I love the most?",o:["irritating sneha","loving sneha","touching sneha","all of these"],correct:3},
@@ -293,9 +283,7 @@ const quiz=[
 
 let qi=0,score=0;
 
-function startQuiz(){
-  qi=0; score=0; showQuiz();
-}
+function startQuiz(){qi=0;score=0;showQuiz();}
 
 function showQuiz(){
   const q=quiz[qi];
@@ -307,11 +295,11 @@ function showQuiz(){
 
 function answer(i,btn){
   const q=quiz[qi];
-  if(q.type==="any" || i===q.correct) score++;
+  if(q.type==="any"||i===q.correct)score++;
   btn.classList.add("correct");
   setTimeout(()=>{
     qi++;
-    qi<quiz.length ? showQuiz() : result();
+    qi<quiz.length?showQuiz():result();
   },600);
 }
 
