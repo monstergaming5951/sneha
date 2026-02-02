@@ -1,172 +1,232 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Sneha ❤️ Will you be my Valentine?</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sneha ❤️ Will you be my Valentine?</title>
 
-  <!-- Google Font -->
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-  <style>
-    * { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+<style>
+* { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
 
-    body {
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(135deg, #ff758c, #ff7eb3);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #ff758c, #ff7eb3);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow-x: hidden;
+}
 
-    .container {
-      background: #fff;
-      padding: 30px 25px;
-      border-radius: 25px;
-      width: 90%;
-      max-width: 420px;
-      text-align: center;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.2);
-      position: relative;
-      overflow: hidden;
-    }
+/* CARD */
+.container {
+  background: #fff;
+  padding: 30px 25px;
+  border-radius: 25px;
+  width: 90%;
+  max-width: 420px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+  position: relative;
+}
 
-    h1 { color: #ff3366; margin-bottom: 10px; font-size: 26px; }
-    h2 { color: #444; font-weight: 400; font-size: 18px; margin-bottom: 20px; }
+h1 { color: #ff3366; font-size: 26px; margin-bottom: 5px; }
+h2 { color: #444; font-size: 18px; font-weight: 400; margin-bottom: 20px; }
 
-    /* Full photo */
-    .profile-pic {
-      width: 200px; /* adjust size */
-      height: auto;
-      border-radius: 20px;
-      margin-bottom: 20px;
-    }
+/* IMAGE – FULL NO CROP */
+.profile-pic {
+  max-width: 100%;
+  height: auto;
+  border-radius: 20px;
+  margin-bottom: 20px;
+}
 
-    #typing {
-      min-height: 120px;
-      font-size: 15px;
-      color: #555;
-      margin-bottom: 25px;
-    }
+/* TEXT */
+#typing {
+  min-height: 120px;
+  font-size: 15px;
+  color: #555;
+  margin-bottom: 25px;
+}
 
-    .buttons { display: flex; justify-content: center; gap: 15px; margin-bottom: 10px; }
-    button { padding: 12px 24px; border-radius: 30px; border: none; font-size: 15px; cursor: pointer; transition: all 0.3s ease; }
-    #yesBtn { background: #ff3366; color: white; box-shadow: 0 8px 20px rgba(255, 51, 102, 0.4); }
-    #yesBtn:hover { transform: scale(1.08); }
-    #noBtn { background: #f1f1f1; color: #333; position: relative; }
+/* BUTTONS */
+.buttons {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
 
-    .footer { font-size: 12px; color: #999; }
+button {
+  padding: 12px 26px;
+  border-radius: 30px;
+  border: none;
+  font-size: 15px;
+  cursor: pointer;
+  transition: 0.3s;
+}
 
-    /* floating hearts */
-    .heart { position: absolute; font-size: 18px; animation: float 6s linear infinite; opacity: 0.8; }
-    @keyframes float { 0% { transform: translateY(100vh) scale(1); opacity: 1; } 100% { transform: translateY(-10vh) scale(1.5); opacity: 0; } }
+#yesBtn {
+  background: #ff3366;
+  color: #fff;
+  box-shadow: 0 8px 20px rgba(255,51,102,0.4);
+}
+#yesBtn:hover { transform: scale(1.1); }
 
-    /* popup */
-    .popup { position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; justify-content: center; align-items: center; z-index: 5; }
-    .popup-card { background: white; padding: 30px; border-radius: 25px; text-align: center; width: 85%; max-width: 380px; animation: popIn 0.6s ease; }
-    .popup-card h2 { color: #ff3366; }
-    .popup-card p { font-size: 14px; color: #555; margin: 15px 0 25px; }
-    .popup-card button { background: #ff3366; color: white; padding: 10px 20px; border-radius: 25px; border: none; cursor: pointer; }
-  </style>
+#noBtn {
+  background: #f1f1f1;
+  color: #333;
+  position: absolute;
+}
+
+/* FOOTER */
+.footer {
+  margin-top: 15px;
+  font-size: 12px;
+  color: #999;
+}
+
+/* HEARTS */
+.heart {
+  position: fixed;
+  font-size: 18px;
+  pointer-events: none;
+  animation: float 6s linear forwards;
+}
+
+@keyframes float {
+  from { transform: translateY(100vh); opacity: 1; }
+  to { transform: translateY(-10vh); opacity: 0; }
+}
+
+/* POPUP */
+.popup {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.popup-card {
+  background: #fff;
+  padding: 30px;
+  border-radius: 25px;
+  width: 85%;
+  max-width: 380px;
+  text-align: center;
+  animation: pop 0.6s ease;
+}
+
+@keyframes pop {
+  from { transform: scale(0.6); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.popup-card h2 { color: #ff3366; }
+
+.popup-card button {
+  background: #ff3366;
+  color: white;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 25px;
+  cursor: pointer;
+}
+</style>
 </head>
+
 <body>
 
-  <!-- Background Music -->
-  <audio id="bgMusic" loop>
-    <source src="music.mp3" type="audio/mpeg">
-  </audio>
+<!-- 🎵 MUSIC (YOUR REAL FILE NAME) -->
+<audio id="bgMusic" loop preload="auto">
+  <source src="music.mp3.mp3" type="audio/mpeg">
+</audio>
 
-  <div class="container">
-    <h1>❤️ Mrs. Sneha Saha ❤️</h1>
-    <h2>Will you be my Valentine?</h2>
+<div class="container">
+  <h1>❤️ Mrs. Sneha Saha ❤️</h1>
+  <h2>Will you be my Valentine?</h2>
 
-    <!-- Full profile photo -->
-    <img src="8140cef4-31ef-4b8a-8756-2a5c25d3ebca.png" alt="Sneha" class="profile-pic">
+  <!-- ✅ REAL IMAGE FILE -->
+  <img src="pic1.jpg.jpeg" alt="Sneha" class="profile-pic">
 
-    <div id="typing"></div>
+  <div id="typing"></div>
 
-    <div class="buttons">
-      <button id="yesBtn">Yes 💖</button>
-      <button id="noBtn">No 🙈</button>
-    </div>
-
-    <div class="footer">"Every moment with you feels like a dream come true"</div>
+  <div class="buttons">
+    <button id="yesBtn">Yes 💖</button>
+    <button id="noBtn">No 🙈</button>
   </div>
 
-  <!-- Popup -->
-  <div class="popup" id="popup">
-    <div class="popup-card">
-      <h2>I knew it babyyyy 😭❤️</h2>
-      <p>Thank you for choosing me, bubuu. I promise to love you, respect you, and stand by you forever.<br><br>You are my heart, my happiness, my Valentine — today and always🤧🌸🌻💕.</p>
-      <button onclick="closePopup()">Forever Us 💞</button>
-    </div>
+  <div class="footer">"Every moment with you feels like a dream come true"</div>
+</div>
+
+<!-- POPUP -->
+<div class="popup" id="popup">
+  <div class="popup-card">
+    <h2>I knew it babyyyy 😭❤️</h2>
+    <p>
+      Thank you for choosing me bubuu 🥺  
+      I promise to love you, respect you and stand by you forever.  
+      You are my Valentine — today & always 💕
+    </p>
+    <button onclick="closePopup()">Forever Us 💞</button>
   </div>
+</div>
 
-  <script>
-    // Typing text
-    const message = "BUBU, from the moment you entered my life😭, everything changed😤. Your smile brightens my darkest days, your voice calms my chaos🥺, and your presence feels like home. I may not be perfect, but my love for you is real, pure, and endless🙄😽.";
-    let i = 0;
-    function typeText() {
-      if (i < message.length) {
-        document.getElementById('typing').innerHTML += message.charAt(i);
-        i++;
-        setTimeout(typeText, 40);
-      }
-    }
-    typeText();
+<script>
+/* TYPE EFFECT */
+const text = "BUBU, from the moment you entered my life😭 everything changed😤. Your smile lights my darkest days, your voice calms my chaos🥺 and your presence feels like home. My love for you is pure, real and endless😽❤️";
+let i = 0;
+function typing() {
+  if (i < text.length) {
+    document.getElementById("typing").innerHTML += text.charAt(i);
+    i++;
+    setTimeout(typing, 40);
+  }
+}
+typing();
 
-    // No button dodge
-    const noBtn = document.getElementById('noBtn');
-    const container = document.querySelector('.container');
+/* MUSIC STARTS ON PAGE CLICK */
+const music = document.getElementById("bgMusic");
+document.addEventListener("click", () => {
+  music.currentTime = 0;
+  music.volume = 0.7;
+  music.play().catch(()=>{});
+}, { once: true });
 
-    function moveNoBtn() {
-      const containerRect = container.getBoundingClientRect();
-      const btnRect = noBtn.getBoundingClientRect();
+/* CRAZY NO BUTTON */
+const noBtn = document.getElementById("noBtn");
+noBtn.addEventListener("mouseenter", () => {
+  noBtn.style.left = Math.random() * (window.innerWidth - 100) + "px";
+  noBtn.style.top = Math.random() * (window.innerHeight - 50) + "px";
+});
 
-      const maxX = containerRect.width - btnRect.width;
-      const maxY = containerRect.height - btnRect.height;
+/* YES CLICK */
+const popup = document.getElementById("popup");
+document.getElementById("yesBtn").addEventListener("click", () => {
+  popup.style.display = "flex";
+  for (let i = 0; i < 80; i++) createHeart();
+});
 
-      const randomX = Math.random() * maxX;
-      const randomY = Math.random() * maxY;
+/* HEARTS */
+function createHeart() {
+  const h = document.createElement("div");
+  h.className = "heart";
+  h.innerHTML = "❤️";
+  h.style.left = Math.random() * 100 + "vw";
+  h.style.fontSize = Math.random() * 20 + 12 + "px";
+  document.body.appendChild(h);
+  setTimeout(() => h.remove(), 6000);
+}
+setInterval(createHeart, 300);
 
-      noBtn.style.transition = 'transform 0.3s ease';
-      noBtn.style.transform = `translate(${randomX}px, ${randomY}px)`;
-    }
-
-    noBtn.addEventListener('mouseenter', moveNoBtn);
-    noBtn.addEventListener('touchstart', (e) => { e.preventDefault(); moveNoBtn(); });
-
-    // Yes button popup & music
-    const yesBtn = document.getElementById('yesBtn');
-    const popup = document.getElementById('popup');
-    const bgMusic = document.getElementById('bgMusic');
-
-    yesBtn.addEventListener('click', () => {
-      popup.style.display = 'flex';
-      bgMusic.play().catch(() => console.log("Interaction needed to play music"));
-    });
-
-    function closePopup() {
-      popup.style.display = 'none';
-    }
-
-    // Floating hearts
-    function createHeart() {
-      const heart = document.createElement('div');
-      heart.className = 'heart';
-      heart.innerHTML = '❤️';
-      heart.style.left = Math.random() * 100 + 'vw';
-      heart.style.animationDuration = (Math.random() * 3 + 4) + 's';
-      document.body.appendChild(heart);
-      setTimeout(() => heart.remove(), 7000);
-    }
-    setInterval(createHeart, 300);
-
-    // Play music on first click anywhere (for autoplay restrictions)
-    document.addEventListener('click', () => { bgMusic.play().catch(() => {}); }, { once: true });
-  </script>
+function closePopup() {
+  popup.style.display = "none";
+}
+</script>
 
 </body>
 </html>
