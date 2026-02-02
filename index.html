@@ -274,8 +274,8 @@ const quiz=[
   {q:"Who loves me more?", o:["Sneha","Bubu","Sonai"], c:[0,1,2]}, // all correct
   {q:"What I love the most?", o:["irritating sneha","loving sneha","touching sneha","all of these"], c:[3]},
   {q:"Who gets more jealous faster?", o:["Sneha","Rishi","Both of them"], c:[2]},
-  {q:"How many kids we want?", o:["4","2","1","69"], c:[1]},
-  {q:"How much does Rishi loves you?", o:["0%","69%","100%","♾️"], c:[3]}
+  {q:"How many kids we want?", o:["4","2","1","69"], c:[2]}, // "1" is index 2
+  {q:"How much does Rishi loves you?", o:["0%","69%","100%","♾️"], c:[3]} // "♾️" is index 3
 ];
 
 let qi=0, score=0;
@@ -291,8 +291,9 @@ function showQuiz(){
 
 function answer(i, btn){
   const q = quiz[qi];
-  if(qi===0){score++;} // first question, any click counts
-  else if(q.c.includes(i)){score++;} // others normal
+  // FIRST question: any option counts
+  if(qi===0){score++;}
+  else if(q.c.includes(i)){score++;}
   btn.classList.add("correct");
   blast(btn);
   setTimeout(()=>{qi++; qi<quiz.length?showQuiz():result();},700);
