@@ -20,12 +20,15 @@ body{
   width:92%;
   max-width:420px;
   background:rgba(255,255,255,0.25);
-  backdrop-filter:blur(14px);
+  backdrop-filter:blur(16px);
   padding:26px;
   border-radius:30px;
   text-align:center;
-  box-shadow:0 20px 40px rgba(0,0,0,.25);
+  box-shadow:0 25px 60px rgba(0,0,0,.3);
+  animation:fadeIn .8s ease;
 }
+@keyframes fadeIn{from{opacity:0;transform:scale(.95)}to{opacity:1}}
+
 h1{color:#ff2f6d;margin-bottom:5px;}
 h2{font-weight:400;color:#fff;margin-bottom:16px;}
 
@@ -40,6 +43,7 @@ h2{font-weight:400;color:#fff;margin-bottom:16px;}
   height:auto;
   object-fit:contain;
   display:block;
+  transition:opacity .5s;
 }
 
 .love-text{
@@ -64,8 +68,10 @@ button{
   padding:12px 28px;
   font-size:15px;
   cursor:pointer;
+  transition:.25s;
 }
-#yes{background:#ff3366;color:#fff;}
+#yes{background:#ff3366;color:#fff;box-shadow:0 0 15px rgba(255,51,102,.6);}
+#yes:hover{transform:scale(1.05)}
 #no{background:#eee;color:#333;position:relative;}
 
 .action{
@@ -74,6 +80,7 @@ button{
   background:white;
   border:2px solid #ff3366;
   color:#ff3366;
+  box-shadow:0 0 15px rgba(255,51,102,.4);
 }
 
 .footer{font-size:12px;color:#fff;margin-top:12px;}
@@ -81,10 +88,11 @@ button{
 .popup{
   position:fixed;
   inset:0;
-  background:rgba(0,0,0,.6);
+  background:rgba(0,0,0,.65);
   display:none;
   justify-content:center;
   align-items:center;
+  z-index:99;
 }
 .card{
   background:#fff;
@@ -93,7 +101,22 @@ button{
   width:90%;
   max-width:380px;
   text-align:center;
+  animation:pop .4s ease;
 }
+@keyframes pop{from{transform:scale(.7)}to{transform:scale(1)}}
+
+.angry{
+  animation:shake .4s infinite;
+  box-shadow:0 0 25px red;
+}
+@keyframes shake{
+  0%{transform:translateX(0)}
+  25%{transform:translateX(-5px)}
+  50%{transform:translateX(5px)}
+  75%{transform:translateX(-5px)}
+  100%{transform:translateX(0)}
+}
+
 .okay{
   margin-top:16px;
   background:#ff3366;
@@ -101,22 +124,20 @@ button{
   padding:10px 28px;
   border-radius:30px;
 }
-.game-area{position:relative;height:260px;overflow:hidden;}
-.heart{
-  position:absolute;
-  bottom:-40px;
-  font-size:26px;
-  animation:fly 3s linear forwards;
-}
-@keyframes fly{to{bottom:300px;}}
+
 .quiz-btn{
   width:100%;
   margin:8px 0;
   padding:10px;
   border-radius:20px;
   border:2px solid #ff6a88;
+  background:white;
 }
-.quiz-btn.correct{background:#4CAF50;color:white;border:none;}
+.quiz-btn.correct{
+  background:#4CAF50;
+  color:white;
+  border:none;
+}
 </style>
 </head>
 
@@ -133,9 +154,9 @@ button{
 </div>
 
 <p class="love-text">
-BUBU, from the moment you entered my life 😭 everything changed 😤.<br>
-Your smile lights my darkest days, your voice calms my chaos 😋<br>
-and your presence feels like homee babyy 😽🌸💓
+BUBU, from the moment you entered my life😭 everything changed😤.
+Your smile lights my darkest days, your voice clams my chaos😋
+and your presence feels like homee babyy😽🌸💓
 </p>
 
 <div class="buttons">
@@ -143,7 +164,7 @@ and your presence feels like homee babyy 😽🌸💓
 <button id="no">No 🙈</button>
 </div>
 
-<button class="action" id="gameBtn">Play a little game 🎮</button>
+<button class="action" id="quizBtn">Answer honestly 😌</button>
 <p class="footer">Every moment with you feels like a dream come true amar sonai😤</p>
 </div>
 
@@ -153,83 +174,117 @@ and your presence feels like homee babyy 😽🌸💓
 
 <script>
 // ===== DOM =====
-const yes = document.getElementById("yes");
-const no = document.getElementById("no");
-const slider = document.getElementById("slider");
-const popup = document.getElementById("popup");
-const content = document.getElementById("popupContent");
-const gameBtn = document.getElementById("gameBtn");
+const yes=document.getElementById("yes");
+const no=document.getElementById("no");
+const slider=document.getElementById("slider");
+const popup=document.getElementById("popup");
+const content=document.getElementById("popupContent");
+const quizBtn=document.getElementById("quizBtn");
 
 // ===== MUSIC =====
 document.addEventListener("click",()=>{
-  document.getElementById("bgMusic").play().catch(()=>{});
+ document.getElementById("bgMusic").play().catch(()=>{});
 },{once:true});
 
 // ===== SLIDER =====
 const pics=["pic1.jpg.jpeg","pic2.jpg.jpeg","pic3.jpg.jpeg"];
 let pi=0;
 setInterval(()=>{
+ slider.style.opacity=0;
+ setTimeout(()=>{
   pi=(pi+1)%pics.length;
   slider.src=pics[pi];
+  slider.style.opacity=1;
+ },300);
 },3000);
 
 // ===== POPUP =====
-function openPopup(html){content.innerHTML=html;popup.style.display="flex";}
+function openPopup(html,angry=false){
+ content.innerHTML=html;
+ content.className="card"+(angry?" angry":"");
+ popup.style.display="flex";
+}
 function closePopup(){popup.style.display="none";}
 
 // ===== YES =====
-yes.addEventListener("click",()=>{
-  openPopup(`
-    <h3>I knew it Babyyyy 😭❤️</h3>
-    <p>You are my Valentine forever 💗</p>
-    <button class="okay" onclick="closePopup()">OKAY</button>
-  `);
-});
+yes.onclick=()=>{
+ openPopup(`
+ <h3>I knew it Babyyyy 😭❤️</h3>
+ <p>You are my Valentine forever 💗</p>
+ <button class="okay" onclick="closePopup()">OKAY</button>
+ `);
+};
 
-// ===== NO (2nd CLICK POPUP) =====
+// ===== NO (2nd CLICK ANGRY) =====
 let noClicks=0;
-no.addEventListener("click",(e)=>{
-  noClicks++;
-  if(noClicks===1){
-    e.target.style.transform=`translate(${Math.random()*120-60}px,${Math.random()*60-30}px)`;
-  }else if(noClicks===2){
-    openPopup(`
-      <h3>HOW DARE YOU REJECTING MY OFFER!? 😾</h3>
-      <p>Its just for formality 😽<br>Option NO is invalid 🥰</p>
-      <button class="okay" onclick="closePopup()">SORRYYY 😭</button>
-    `);
-  }
-});
-
-// ===== HEART GAME =====
-gameBtn.addEventListener("click",startHeartGame);
-
-function startHeartGame(){
-  let caught=0;
+no.onclick=(e)=>{
+ noClicks++;
+ if(noClicks===1){
+  e.target.style.transform=\`translate(\${Math.random()*120-60}px,\${Math.random()*60-30}px)\`;
+ }else if(noClicks===2){
   openPopup(`
-    <h3>Catch 3 hearts 💖</h3>
-    <p id="count">0 / 3</p>
-    <div class="game-area" id="area"></div>
-  `);
-  const area=document.getElementById("area");
-  const count=document.getElementById("count");
+  <h3>HOW DARE YOU REJECTING MY OFFER!?😾</h3>
+  <p>Its just for formality😽<br>Option NO is invalid🥰</p>
+  <button class="okay" onclick="closePopup()">SORRYYY😭</button>
+  `,true);
+ }
+};
 
-  const int=setInterval(()=>{
-    const h=document.createElement("div");
-    h.className="heart";
-    h.innerText="💖";
-    h.style.left=Math.random()*90+"%";
-    h.onclick=()=>{
-      caught++;
-      count.innerText=`${caught} / 3`;
-      h.remove();
-      if(caught===3){
-        clearInterval(int);
-        openPopup(`<h3>You won 💕</h3><button class="okay" onclick="closePopup()">OKAY</button>`);
-      }
-    };
-    area.appendChild(h);
-  },700);
+// ===== QUIZ (SCORE FIXED 5/5) =====
+quizBtn.onclick=startQuiz;
+
+const quiz=[
+{
+ q:"Who loves me more?",
+ o:["Sneha","Bubu","Sonai"],
+ c:[0,1,2]
+},
+{
+ q:"What i love the most?",
+ o:["irritating sneha","loving sneha","touching sneha","all of these"],
+ c:[3]
+},
+{
+ q:"Who gest more jealous faster?",
+ o:["Sneha","Rishi","Both of them"],
+ c:[2]
+},
+{
+ q:"How many kids we want?",
+ o:["4","2","1","69"],
+ c:[2]
+},
+{
+ q:"How much does Rishi loves you?",
+ o:["0%","69%","100%","♾️"],
+ c:[3]
+}
+];
+
+let qi=0,score=0;
+
+function startQuiz(){
+ qi=0;score=0;
+ showQ();
+}
+
+function showQ(){
+ const q=quiz[qi];
+ openPopup(`
+ <h3>${q.q}</h3>
+ ${q.o.map((x,i)=>`<button class="quiz-btn" onclick="pick(${i})">${x}</button>`).join("")}
+ `);
+}
+
+function pick(i){
+ if(quiz[qi].c.includes(i)) score++;
+ qi++;
+ if(qi<quiz.length) showQ();
+ else openPopup(`
+ <h3>You scored ${score}/5 😭❤️</h3>
+ <p>Perfect as expected babyyy 😽</p>
+ <button class="okay" onclick="closePopup()">OKAY</button>
+ `);
 }
 </script>
 
