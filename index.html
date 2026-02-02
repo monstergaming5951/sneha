@@ -20,6 +20,7 @@ body {
   overflow-x: hidden;
 }
 
+/* CARD */
 .container {
   background: white;
   padding: 28px 22px;
@@ -29,6 +30,7 @@ body {
   text-align: center;
   box-shadow: 0 20px 40px rgba(0,0,0,0.25);
   position: relative;
+  z-index: 2;
 }
 
 h1 { color: #ff3366; font-size: 26px; margin-bottom: 6px; }
@@ -37,7 +39,6 @@ h2 { color: #444; font-size: 18px; font-weight: 400; margin-bottom: 20px; }
 /* SLIDER IMAGE */
 .profile-pic {
   width: 100%;
-  height: auto;
   border-radius: 20px;
   margin-bottom: 20px;
   transition: opacity 0.5s ease;
@@ -50,11 +51,11 @@ h2 { color: #444; font-size: 18px; font-weight: 400; margin-bottom: 20px; }
   margin-bottom: 22px;
 }
 
+/* BUTTONS */
 .buttons {
   display: flex;
   justify-content: center;
   gap: 20px;
-  position: relative;
 }
 
 button {
@@ -71,13 +72,12 @@ button {
   color: #fff;
   box-shadow: 0 8px 20px rgba(255,51,102,0.4);
 }
-
 #yesBtn:hover { transform: scale(1.1); }
 
 #noBtn {
   background: #f1f1f1;
   color: #333;
-  position: relative; /* IMPORTANT FIX */
+  position: relative;
 }
 
 .footer {
@@ -86,20 +86,23 @@ button {
   color: #999;
 }
 
-/* HEARTS */
-.heart {
+/* 🌹 ROSE PETALS */
+.petal {
   position: fixed;
-  font-size: 18px;
+  top: -10vh;
+  font-size: 20px;
   pointer-events: none;
-  animation: float 6s linear forwards;
+  animation: fall linear forwards;
 }
 
-@keyframes float {
-  from { transform: translateY(100vh); opacity: 1; }
-  to { transform: translateY(-10vh); opacity: 0; }
+@keyframes fall {
+  to {
+    transform: translateY(110vh) rotate(360deg);
+    opacity: 0;
+  }
 }
 
-/* POPUP */
+/* POPUPS */
 .popup {
   position: fixed;
   inset: 0;
@@ -140,7 +143,7 @@ button {
 
 <body>
 
-<!-- MUSIC -->
+<!-- 🎵 MUSIC -->
 <audio id="bgMusic" loop preload="auto">
   <source src="music.mp3.mp3" type="audio/mpeg">
 </audio>
@@ -149,7 +152,7 @@ button {
   <h1>❤️ Mrs. Sneha Saha ❤️</h1>
   <h2>Will you be my Valentine?</h2>
 
-  <!-- SLIDER IMAGE -->
+  <!-- IMAGE SLIDER -->
   <img id="slider" src="pic1.jpg.jpeg" class="profile-pic">
 
   <div id="typing"></div>
@@ -162,7 +165,7 @@ button {
   <div class="footer">"Every moment with you feels like a dream come true"</div>
 </div>
 
-<!-- POPUPS -->
+<!-- YES POPUP -->
 <div class="popup" id="popupYes">
   <div class="popup-card">
     <h2>I knew it babyyyy 😭❤️</h2>
@@ -171,6 +174,7 @@ button {
   </div>
 </div>
 
+<!-- NO POPUP -->
 <div class="popup" id="popupNo">
   <div class="popup-card">
     <h2>HOW DARE YOU REJECTING MY OFFER😾</h2>
@@ -180,7 +184,7 @@ button {
 </div>
 
 <script>
-/* TYPING */
+/* TYPING EFFECT */
 const text = "BUBU, from the moment you entered my life😭 everything changed😤. Your smile lights my darkest days, your voice calms my chaos🥺 and your presence feels like home😽❤️";
 let i = 0;
 (function type(){
@@ -190,15 +194,21 @@ let i = 0;
   }
 })();
 
-/* MUSIC ON FIRST CLICK */
+/* 🎶 MUSIC FADE-IN ON FIRST CLICK */
 const music = document.getElementById("bgMusic");
-document.addEventListener("click", ()=>{
-  music.currentTime = 0;
-  music.volume = 0.7;
+document.addEventListener("click", () => {
+  music.volume = 0;
   music.play().catch(()=>{});
+  let vol = 0;
+  const fade = setInterval(()=>{
+    if(vol < 0.7){
+      vol += 0.02;
+      music.volume = vol;
+    } else clearInterval(fade);
+  },120);
 },{ once:true });
 
-/* IMAGE SLIDER */
+/* 🖼️ IMAGE SLIDER */
 const images = ["pic1.jpg.jpeg","pic2.jpg.jpeg","pic3.jpg.jpeg"];
 let idx = 0;
 const slider = document.getElementById("slider");
@@ -212,9 +222,26 @@ setInterval(()=>{
   },400);
 },2500);
 
-/* NO BUTTON LOGIC */
+/* 🌹 ROSE PETAL RAIN */
+function createPetal(){
+  const p = document.createElement("div");
+  p.className = "petal";
+  p.innerHTML = "🌹";
+  p.style.left = Math.random()*100+"vw";
+  p.style.animationDuration = (Math.random()*3+4)+"s";
+  document.body.appendChild(p);
+  setTimeout(()=>p.remove(),7000);
+}
+setInterval(createPetal, 400);
+
+/* NO BUTTON */
 const noBtn = document.getElementById("noBtn");
 let noCount = 0;
+
+noBtn.addEventListener("mouseenter", ()=>{
+  noBtn.style.transform =
+    `translate(${Math.random()*120-60}px, ${Math.random()*80-40}px)`;
+});
 
 noBtn.addEventListener("click", ()=>{
   noCount++;
@@ -223,28 +250,10 @@ noBtn.addEventListener("click", ()=>{
   }
 });
 
-noBtn.addEventListener("mouseenter", ()=>{
-  noBtn.style.transform =
-    `translate(${Math.random()*120-60}px, ${Math.random()*80-40}px)`;
-});
-
-/* YES */
+/* YES BUTTON */
 document.getElementById("yesBtn").addEventListener("click", ()=>{
   document.getElementById("popupYes").style.display="flex";
-  for(let i=0;i<60;i++) heart();
 });
-
-/* HEARTS */
-function heart(){
-  const h=document.createElement("div");
-  h.className="heart";
-  h.innerHTML="❤️";
-  h.style.left=Math.random()*100+"vw";
-  h.style.fontSize=Math.random()*20+12+"px";
-  document.body.appendChild(h);
-  setTimeout(()=>h.remove(),6000);
-}
-setInterval(heart,350);
 
 function closePopup(){
   document.querySelectorAll(".popup").forEach(p=>p.style.display="none");
