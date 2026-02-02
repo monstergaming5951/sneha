@@ -97,47 +97,73 @@ margin-top:10px;
 </div>
 
 <script>
-/* 🔊 MUSIC — starts on first interaction (browser-safe) */
-const music=document.getElementById("bgMusic");
-document.addEventListener("click",()=>{
+/* 🔊 MUSIC */
+const music = document.getElementById("bgMusic");
+document.addEventListener("click", () => {
   music.play().catch(()=>{});
-},{once:true});
+}, { once: true });
 
 /* 🖼️ IMAGE SLIDER */
-const imgs=["pic1.jpg.jpeg","pic2.jpg.jpeg","pic3.jpg.jpeg"];
-let i=0;
-const slider=document.getElementById("slider");
+const imgs = ["pic1.jpg.jpeg","pic2.jpg.jpeg","pic3.jpg.jpeg"];
+let imgIndex = 0;
+const slider = document.getElementById("slider");
 
-setInterval(()=>{
-  slider.style.opacity=0;
-  setTimeout(()=>{
-    i=(i+1)%imgs.length;
-    slider.src=imgs[i];
-    slider.style.opacity=1;
-  },400);
-},2500);
+setInterval(() => {
+  slider.style.opacity = 0;
+  setTimeout(() => {
+    imgIndex = (imgIndex + 1) % imgs.length;
+    slider.src = imgs[imgIndex];
+    slider.style.opacity = 1;
+  }, 400);
+}, 2500);
 
-/* 🙈 NO BUTTON DODGE + ANGRY MESSAGE */
-const noBtn=document.getElementById("noBtn");
-const box=document.querySelector(".container");
-let noCount=0;
+/* 🙈 NO BUTTON FIX + DODGE */
+const noBtn = document.getElementById("noBtn");
+const container = document.querySelector(".container");
 
-function moveNo(){
-  const b=box.getBoundingClientRect();
-  const n=noBtn.getBoundingClientRect();
-  const x=Math.random()*(b.width-n.width);
-  const y=Math.random()*(b.height-n.height-80);
-  noBtn.style.transform=`translate(${x}px,${y}px)`;
+let noClicks = 0;
+
+// Reset position so it never disappears
+noBtn.style.transform = "translate(0,0)";
+
+function dodgeNoButton() {
+  const c = container.getBoundingClientRect();
+  const b = noBtn.getBoundingClientRect();
+
+  const maxX = c.width - b.width - 10;
+  const maxY = c.height - b.height - 80;
+
+  const x = Math.random() * maxX;
+  const y = Math.random() * maxY;
+
+  noBtn.style.transform = `translate(${x}px, ${y}px)`;
 }
 
-noBtn.addEventListener("mouseenter",moveNo);
-noBtn.addEventListener("click",()=>{
-  noCount++;
-  if(noCount>=2){
-    alert("HOW DARE YOU REJECTING MY OFFER 😾\n\nIts just for formality 😚\nOption NO is invalid 🥰");
+noBtn.addEventListener("mouseenter", dodgeNoButton);
+noBtn.addEventListener("click", () => {
+  noClicks++;
+  if (noClicks >= 2) {
+    alert(
+      "HOW DARE YOU REJECTING MY OFFER 😾\n\n" +
+      "Its just for formality 😚\n" +
+      "Option NO is invalid 🥰"
+    );
   }
 });
+
+/* ❤️ YES BUTTON WORKING */
+const yesBtn = document.getElementById("yesBtn");
+yesBtn.addEventListener("click", () => {
+  alert("I knew it 😭❤️ You’re my Valentine 💖");
+});
+
+/* 🎮 GAME BUTTON WORKING */
+const gameBtn = document.querySelector(".gameBtn");
+gameBtn.addEventListener("click", () => {
+  alert("Game will start here 🎮 (next step 😌)");
+});
 </script>
+
 
 </body>
 </html>
