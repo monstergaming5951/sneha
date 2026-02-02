@@ -3,260 +3,284 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sneha ❤️ Valentine</title>
+<title>Valentine 💖</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-* { box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+*{box-sizing:border-box;font-family:Poppins}
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: linear-gradient(135deg, #ff758c, #ff7eb3);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  overflow-x: hidden;
+body{
+margin:0;
+min-height:100vh;
+background:linear-gradient(135deg,#ff758c,#ff7eb3);
+display:flex;
+justify-content:center;
+align-items:center;
 }
 
-/* CARD */
-.container {
-  background: white;
-  padding: 28px 22px;
-  border-radius: 30px;
-  width: 90%;
-  max-width: 420px;
-  text-align: center;
-  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
-  position: relative;
-  z-index: 2;
+.container{
+background:white;
+width:90%;
+max-width:420px;
+padding:25px;
+border-radius:28px;
+text-align:center;
+box-shadow:0 20px 40px rgba(0,0,0,.25);
 }
 
-h1 { color: #ff3366; font-size: 26px; margin-bottom: 6px; }
-h2 { color: #444; font-size: 18px; font-weight: 400; margin-bottom: 20px; }
+h1{color:#ff3366;margin:5px 0}
+h2{font-size:17px;font-weight:400;color:#444}
 
-/* SLIDER IMAGE */
-.profile-pic {
-  width: 100%;
-  border-radius: 20px;
-  margin-bottom: 20px;
-  transition: opacity 0.5s ease;
+img{
+width:100%;
+border-radius:20px;
+margin:15px 0;
 }
 
-#typing {
-  min-height: 110px;
-  font-size: 15px;
-  color: #555;
-  margin-bottom: 22px;
+.buttons{
+display:flex;
+justify-content:center;
+gap:15px;
 }
 
-/* BUTTONS */
-.buttons {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
+button{
+border:none;
+border-radius:30px;
+padding:10px 22px;
+font-size:14px;
+cursor:pointer;
 }
 
-button {
-  padding: 12px 26px;
-  border-radius: 30px;
-  border: none;
-  font-size: 15px;
-  cursor: pointer;
-  transition: 0.3s;
+#yesBtn{background:#ff3366;color:white}
+#noBtn{background:#eee}
+
+.gameBtn{
+margin-top:12px;
+background:#ffe6ee;
+border:1px solid #ff3366;
+color:#ff3366;
 }
 
-#yesBtn {
-  background: #ff3366;
-  color: #fff;
-  box-shadow: 0 8px 20px rgba(255,51,102,0.4);
-}
-#yesBtn:hover { transform: scale(1.1); }
-
-#noBtn {
-  background: #f1f1f1;
-  color: #333;
-  position: relative;
+/* POPUP */
+.popup{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.6);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:10;
 }
 
-.footer {
-  margin-top: 15px;
-  font-size: 12px;
-  color: #999;
+.card{
+background:white;
+width:85%;
+max-width:360px;
+padding:22px;
+border-radius:25px;
+text-align:center;
 }
 
-/* 🌹 ROSE PETALS */
-.petal {
-  position: fixed;
-  top: -10vh;
-  font-size: 20px;
-  pointer-events: none;
-  animation: fall linear forwards;
+/* HEART GAME */
+.heart{
+position:absolute;
+font-size:28px;
+animation:fall 3s linear forwards;
+cursor:pointer;
 }
 
-@keyframes fall {
-  to {
-    transform: translateY(110vh) rotate(360deg);
-    opacity: 0;
-  }
+@keyframes fall{
+from{top:-30px}
+to{top:110%}
 }
 
-/* POPUPS */
-.popup {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  display: none;
-  justify-content: center;
-  align-items: center;
-  z-index: 10;
+/* QUIZ */
+.option{
+background:#ffe6ee;
+margin:8px 0;
+padding:10px;
+border-radius:20px;
 }
 
-.popup-card {
-  background: white;
-  padding: 28px;
-  border-radius: 25px;
-  width: 85%;
-  max-width: 380px;
-  text-align: center;
-  animation: pop 0.6s ease;
+.correct{
+background:#6ee7a8 !important;
+color:#065f46;
 }
 
-@keyframes pop {
-  from { transform: scale(0.6); opacity: 0; }
-  to { transform: scale(1); opacity: 1; }
+/* HEART BLAST */
+.blast{
+position:absolute;
+font-size:18px;
+animation:blast 1s ease-out forwards;
 }
 
-.popup-card h2 { color: #ff3366; }
-
-.popup-card button {
-  background: #ff3366;
-  color: white;
-  border: none;
-  padding: 10px 22px;
-  border-radius: 25px;
-  cursor: pointer;
+@keyframes blast{
+from{transform:scale(1);opacity:1}
+to{transform:scale(2);opacity:0}
 }
 </style>
 </head>
 
 <body>
 
-<!-- 🎵 MUSIC -->
-<audio id="bgMusic" loop preload="auto">
-  <source src="music.mp3.mp3" type="audio/mpeg">
-</audio>
-
 <div class="container">
-  <h1>❤️ Mrs. Sneha Saha ❤️</h1>
-  <h2>Will you be my Valentine?</h2>
+<h1>❤️ Sneha ❤️</h1>
+<h2>Will you be my Valentine?</h2>
 
-  <!-- IMAGE SLIDER -->
-  <img id="slider" src="pic1.jpg.jpeg" class="profile-pic">
+<img src="pic1.jpg.jpeg">
 
-  <div id="typing"></div>
-
-  <div class="buttons">
-    <button id="yesBtn">Yes 💖</button>
-    <button id="noBtn">No 🙈</button>
-  </div>
-
-  <div class="footer">"Every moment with you feels like a dream come true"</div>
+<div class="buttons">
+<button id="yesBtn">Yes 💖</button>
+<button id="noBtn">No 🙈</button>
 </div>
 
-<!-- YES POPUP -->
-<div class="popup" id="popupYes">
-  <div class="popup-card">
-    <h2>I knew it babyyyy 😭❤️</h2>
-    <p>You are my Valentine — today & always 💕</p>
-    <button onclick="closePopup()">Forever Us 💞</button>
-  </div>
+<button class="gameBtn" onclick="startHeartGame()">Play a little game 🎮</button>
 </div>
 
-<!-- NO POPUP -->
-<div class="popup" id="popupNo">
-  <div class="popup-card">
-    <h2>HOW DARE YOU REJECTING MY OFFER😾</h2>
-    <p>Its just for formality😚<br>Option NO is invalid🥰</p>
-    <button onclick="closePopup()">Okay 😭💖</button>
-  </div>
+<!-- HEART GAME -->
+<div class="popup" id="heartPopup">
+<div class="card">
+<h3>Catch my hearts 💖</h3>
+<p>Catch 3 hearts to win</p>
+<p id="heartScore">0 / 3</p>
+</div>
+</div>
+
+<!-- QUIZ GAME -->
+<div class="popup" id="quizPopup">
+<div class="card">
+<h3 id="question"></h3>
+<div id="options"></div>
+</div>
 </div>
 
 <script>
-/* TYPING EFFECT */
-const text = "BUBU, from the moment you entered my life😭 everything changed😤. Your smile lights my darkest days, your voice calms my chaos🥺 and your presence feels like home😽❤️";
-let i = 0;
-(function type(){
-  if(i < text.length){
-    document.getElementById("typing").innerHTML += text.charAt(i++);
-    setTimeout(type,40);
-  }
-})();
+/* GAME 1 – CATCH THE HEART */
+let heartsCaught=0;
+let heartInterval;
 
-/* 🎶 MUSIC FADE-IN ON FIRST CLICK */
-const music = document.getElementById("bgMusic");
-document.addEventListener("click", () => {
-  music.volume = 0;
-  music.play().catch(()=>{});
-  let vol = 0;
-  const fade = setInterval(()=>{
-    if(vol < 0.7){
-      vol += 0.02;
-      music.volume = vol;
-    } else clearInterval(fade);
-  },120);
-},{ once:true });
-
-/* 🖼️ IMAGE SLIDER */
-const images = ["pic1.jpg.jpeg","pic2.jpg.jpeg","pic3.jpg.jpeg"];
-let idx = 0;
-const slider = document.getElementById("slider");
-
-setInterval(()=>{
-  slider.style.opacity = 0;
-  setTimeout(()=>{
-    idx = (idx + 1) % images.length;
-    slider.src = images[idx];
-    slider.style.opacity = 1;
-  },400);
-},2500);
-
-/* 🌹 ROSE PETAL RAIN */
-function createPetal(){
-  const p = document.createElement("div");
-  p.className = "petal";
-  p.innerHTML = "🌹";
-  p.style.left = Math.random()*100+"vw";
-  p.style.animationDuration = (Math.random()*3+4)+"s";
-  document.body.appendChild(p);
-  setTimeout(()=>p.remove(),7000);
+function startHeartGame(){
+heartsCaught=0;
+heartScore.innerText="0 / 3";
+heartPopup.style.display="flex";
+heartInterval=setInterval(dropHeart,800);
 }
-setInterval(createPetal, 400);
 
-/* NO BUTTON */
-const noBtn = document.getElementById("noBtn");
-let noCount = 0;
+function dropHeart(){
+const heart=document.createElement("div");
+heart.className="heart";
+heart.innerHTML="💖";
+heart.style.left=Math.random()*80+"%";
+heart.style.top="-30px";
 
-noBtn.addEventListener("mouseenter", ()=>{
-  noBtn.style.transform =
-    `translate(${Math.random()*120-60}px, ${Math.random()*80-40}px)`;
+heart.onclick=()=>{
+heartsCaught++;
+heartScore.innerText=heartsCaught+" / 3";
+heart.remove();
+if(heartsCaught>=3){
+clearInterval(heartInterval);
+setTimeout(winHeartGame,300);
+}
+};
+
+heartPopup.appendChild(heart);
+setTimeout(()=>heart.remove(),3000);
+}
+
+function winHeartGame(){
+heartPopup.innerHTML=`
+<div class="card">
+<h3>Looks like my heart already belongs to you 😭❤️</h3>
+<button onclick="nextGame()">Next and final game ➡️</button>
+</div>`;
+}
+
+function nextGame(){
+heartPopup.style.display="none";
+startQuiz();
+}
+
+/* GAME 2 – QUIZ */
+const quiz=[
+{
+q:"Who loves me more?",
+o:["Sneha","Bubu","Sonai"],
+c:[0,1,2]
+},
+{
+q:"What I love the most?",
+o:["irritating sneha","loving sneha","touching sneha","all of these"],
+c:[3]
+},
+{
+q:"Who gets more jealous faster?",
+o:["Sneha","Rishi","Both of them"],
+c:[2]
+},
+{
+q:"How many kids we want?",
+o:["4","2","1","69"],
+c:[2]
+},
+{
+q:"How much does Rishi loves you?",
+o:["0%","69%","100%","♾️"],
+c:[3]
+}
+];
+
+let qi=0,score=0;
+
+function startQuiz(){
+qi=0;score=0;
+quizPopup.style.display="flex";
+showQuestion();
+}
+
+function showQuestion(){
+question.innerText=quiz[qi].q;
+options.innerHTML="";
+quiz[qi].o.forEach((txt,i)=>{
+const div=document.createElement("div");
+div.className="option";
+div.innerText=txt;
+div.onclick=()=>selectOption(div,i);
+options.appendChild(div);
 });
+}
 
-noBtn.addEventListener("click", ()=>{
-  noCount++;
-  if(noCount >= 2){
-    document.getElementById("popupNo").style.display="flex";
-  }
-});
+function selectOption(el,i){
+if(quiz[qi].c.includes(i)) score++;
+el.classList.add("correct");
+blastHearts(el);
+setTimeout(()=>{
+qi++;
+if(qi<quiz.length) showQuestion();
+else endQuiz();
+},700);
+}
 
-/* YES BUTTON */
-document.getElementById("yesBtn").addEventListener("click", ()=>{
-  document.getElementById("popupYes").style.display="flex";
-});
+function blastHearts(el){
+for(let i=0;i<6;i++){
+const b=document.createElement("div");
+b.className="blast";
+b.innerText="💖";
+b.style.left=(el.offsetLeft+Math.random()*80)+"px";
+b.style.top=(el.offsetTop+10)+"px";
+quizPopup.appendChild(b);
+setTimeout(()=>b.remove(),1000);
+}
+}
 
-function closePopup(){
-  document.querySelectorAll(".popup").forEach(p=>p.style.display="none");
+function endQuiz(){
+quizPopup.innerHTML=`
+<div class="card">
+<h3>Sneha scored ${score} / 5 💕</h3>
+<p><b>No matter what your score is<br>
+You love me the most 😌❤️</b></p>
+<button onclick="quizPopup.style.display='none'">Aww 🥹</button>
+</div>`;
 }
 </script>
 
