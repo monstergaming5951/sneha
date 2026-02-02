@@ -3,284 +3,234 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Sneha ❤️</title>
+<title>Sneha ❤️ Valentine</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-*{box-sizing:border-box;font-family:Poppins}
-
+*{box-sizing:border-box;font-family:Poppins,sans-serif}
 body{
-margin:0;
-min-height:100vh;
-background:linear-gradient(135deg,#ff758c,#ff7eb3);
-display:flex;
-justify-content:center;
-align-items:center;
+margin:0;min-height:100vh;
+display:flex;justify-content:center;align-items:center;
+background:linear-gradient(135deg,#ff758c,#ff7eb3)
 }
-
 .container{
-background:#fff;
-width:90%;
-max-width:420px;
-padding:25px;
-border-radius:30px;
-text-align:center;
-box-shadow:0 20px 40px rgba(0,0,0,.25);
-position:relative;
+background:#fff;width:90%;max-width:420px;
+padding:25px;border-radius:30px;text-align:center;
+box-shadow:0 20px 40px rgba(0,0,0,.25)
 }
+h1{color:#ff3366;margin-bottom:5px}
+h2{font-weight:400;margin-bottom:15px}
 
-h1{color:#ff3366;margin:8px 0}
-h2{font-size:17px;color:#444;font-weight:400}
-
-#slider{
-width:100%;
-border-radius:20px;
-margin:15px 0;
-transition:opacity .5s ease;
+/* SLIDER */
+.slider{
+width:100%;height:220px;
+border-radius:20px;overflow:hidden;margin-bottom:20px
 }
+.slider img{
+width:100%;height:100%;object-fit:cover;
+display:none
+}
+.slider img.active{display:block}
 
+/* BUTTONS */
 .buttons{
-position:relative;
-height:60px;
-margin-top:10px;
+display:flex;justify-content:center;gap:15px;margin-bottom:15px
 }
-
-#yesBtn{
-background:#ff3366;
-color:white;
-border:none;
-border-radius:30px;
-padding:10px 22px;
-font-size:14px;
-cursor:pointer;
+button{
+border:none;border-radius:30px;
+padding:12px 24px;font-size:15px;cursor:pointer
 }
-
-#noBtn{
-position:absolute;
-right:0;
-top:0;
-background:#eee;
-border:none;
-border-radius:30px;
-padding:10px 22px;
-font-size:14px;
-cursor:pointer;
-}
-
-.gameBtn{
-margin-top:15px;
-background:#ffe6ee;
-border:1px solid #ff3366;
-color:#ff3366;
-border-radius:30px;
-padding:10px 22px;
-cursor:pointer;
-}
-
-.footer{
-font-size:12px;
-color:#999;
-margin-top:10px;
+#yesBtn{background:#ff3366;color:#fff}
+#noBtn{background:#eee;color:#333;position:relative}
+#gameBtn{
+background:#fff;border:2px solid #ff3366;
+color:#ff3366;width:100%
 }
 
 /* POPUP */
 .popup{
-position:fixed;
-inset:0;
+position:fixed;inset:0;
 background:rgba(0,0,0,.6);
-display:none;
-justify-content:center;
-align-items:center;
-z-index:10;
+display:none;justify-content:center;align-items:center;z-index:10
+}
+.popup-card{
+background:#fff;padding:25px;border-radius:25px;
+width:90%;max-width:380px;text-align:center
 }
 
-.card{
-background:white;
-padding:22px;
-border-radius:25px;
-width:85%;
-max-width:360px;
-text-align:center;
-}
-
-/* HEART GAME */
+/* HEARTS */
 .heart{
-position:absolute;
-font-size:26px;
-top:-30px;
-animation:fall 3s linear forwards;
-cursor:pointer;
+position:fixed;font-size:20px;
+animation:float 4s linear forwards
+}
+@keyframes float{
+from{transform:translateY(0);opacity:1}
+to{transform:translateY(-120vh);opacity:0}
 }
 
-@keyframes fall{
-to{top:110%}
+/* GAME */
+.game-area{display:none}
+.heart-game span{
+font-size:30px;cursor:pointer;margin:10px
 }
-
-/* QUIZ */
-.option{
-background:#ffe6ee;
-margin:8px 0;
-padding:10px;
-border-radius:20px;
-cursor:pointer;
-}
-
-.correct{
-background:#6ee7a8 !important;
-}
+.quiz button{display:block;width:100%;margin:8px 0}
+.correct{background:#4caf50!important;color:#fff}
 </style>
 </head>
 
 <body>
 
-<audio id="bgMusic" loop>
-  <source src="music.mp3.mp3" type="audio/mpeg">
+<audio id="music" loop>
+<source src="music.mp3.mp3" type="audio/mpeg">
 </audio>
 
 <div class="container">
+
 <h1>❤️ Sneha ❤️</h1>
 <h2>Will you be my Valentine?</h2>
 
-<img id="slider" src="pic1.jpg.jpeg">
+<div class="slider">
+<img src="pic1.jpg.jpeg" class="active">
+<img src="pic2.jpg.jpeg">
+<img src="pic3.jpg.jpeg">
+</div>
 
 <div class="buttons">
 <button id="yesBtn">Yes 💖</button>
 <button id="noBtn">No 🙈</button>
 </div>
 
-<button class="gameBtn" id="gameBtn">Play a little game 🎮</button>
+<button id="gameBtn">Play a little game 🎮</button>
 
-<div class="footer">"Every moment with you feels like a dream come true"</div>
-</div>
+<p style="font-size:12px;color:#777;margin-top:10px">
+"Every moment with you feels like a dream come true"
+</p>
 
-<!-- HEART GAME -->
-<div class="popup" id="heartPopup">
-<div class="card">
-<h3>Catch my hearts 💖</h3>
-<p id="heartScore">0 / 3</p>
-</div>
 </div>
 
-<!-- QUIZ -->
-<div class="popup" id="quizPopup">
-<div class="card">
-<h3 id="question"></h3>
-<div id="options"></div>
-</div>
+<!-- POPUP -->
+<div class="popup" id="popup">
+<div class="popup-card" id="popupContent"></div>
 </div>
 
 <script>
 /* MUSIC */
-const music=document.getElementById("bgMusic");
-document.addEventListener("click",()=>music.play().catch(()=>{}),{once:true});
+document.addEventListener('click',()=>{
+document.getElementById('music').play().catch(()=>{})
+},{once:true})
 
 /* SLIDER */
-const images=["pic1.jpg.jpeg","pic2.jpg.jpeg","pic3.jpg.jpeg"];
-let si=0;
+let slides=document.querySelectorAll('.slider img')
+let s=0
 setInterval(()=>{
-slider.style.opacity=0;
-setTimeout(()=>{
-si=(si+1)%images.length;
-slider.src=images[si];
-slider.style.opacity=1;
-},400);
-},2500);
+slides[s].classList.remove('active')
+s=(s+1)%slides.length
+slides[s].classList.add('active')
+},3000)
 
-/* NO BUTTON (SAFE) */
-const noBtn=document.getElementById("noBtn");
-const btnBox=document.querySelector(".buttons");
-let noClicks=0;
-
-noBtn.addEventListener("mouseenter",()=>{
-const maxX=btnBox.clientWidth-noBtn.offsetWidth;
-const x=Math.random()*maxX;
-noBtn.style.left=x+"px";
-});
-
-noBtn.addEventListener("click",()=>{
-noClicks++;
-if(noClicks>=2){
-alert("HOW DARE YOU REJECTING MY OFFER 😾\n\nIts just for formality 😚\nOption NO is invalid 🥰");
+/* NO BUTTON RUN */
+let noCount=0
+const noBtn=document.getElementById('noBtn')
+noBtn.addEventListener('mouseenter',()=>{
+noBtn.style.transform=`translate(${Math.random()*100-50}px,${Math.random()*60-30}px)`
+})
+noBtn.onclick=()=>{
+noCount++
+if(noCount>=2){
+showPopup("HOW DARE YOU 😾<br><br>It's just for formality 😚<br>NO is invalid 🥰")
 }
-});
+}
 
-/* YES BUTTON */
-yesBtn.onclick=()=>alert("I knew it 😭❤️");
+/* YES */
+document.getElementById('yesBtn').onclick=()=>{
+showPopup("I knew it 😭❤️<br><br>You are my Valentine forever 💞")
+}
 
-/* GAME 1 */
-let hearts=0,interval;
-gameBtn.onclick=()=>{
-hearts=0;
-heartScore.innerText="0 / 3";
-heartPopup.style.display="flex";
-interval=setInterval(()=>{
-const h=document.createElement("div");
-h.className="heart";
-h.innerText="💖";
-h.style.left=Math.random()*80+"%";
+/* POPUP */
+function showPopup(html){
+document.getElementById('popupContent').innerHTML=
+html+"<br><br><button onclick='closePopup()'>OK</button>"
+document.getElementById('popup').style.display='flex'
+}
+function closePopup(){
+document.getElementById('popup').style.display='none'
+}
+
+/* GAME BUTTON */
+document.getElementById('gameBtn').onclick=startHeartGame
+
+function startHeartGame(){
+showPopup(`
+<h3>Catch 3 hearts 💘</h3>
+<div class="heart-game" id="heartGame"></div>
+`)
+let score=0
+let area=document.getElementById('heartGame')
+let interval=setInterval(()=>{
+let h=document.createElement('span')
+h.innerHTML='❤️'
 h.onclick=()=>{
-hearts++;
-heartScore.innerText=hearts+" / 3";
-h.remove();
-if(hearts>=3){
-clearInterval(interval);
-setTimeout(()=>{
-heartPopup.innerHTML=`<div class="card">
-<h3>Looks like my heart already belongs to you 😭❤️</h3>
-<button onclick="startQuiz()">Next and final game ➡️</button>
-</div>`;
-},300);
+score++
+h.remove()
+if(score>=3){
+clearInterval(interval)
+showPopup("Looks like my heart already belongs to you 😭❤️<br><br><button onclick='startQuiz()'>Next & Final Game</button>")
 }
-};
-heartPopup.appendChild(h);
-setTimeout(()=>h.remove(),3000);
-},800);
-};
+}
+area.appendChild(h)
+setTimeout(()=>h.remove(),2000)
+},600)
+}
 
 /* QUIZ */
+let q=0,score=0
 const quiz=[
-{q:"Who loves me more?",o:["Sneha","Bubu","Sonai"],c:[0,1,2]},
-{q:"What I love the most?",o:["irritating sneha","loving sneha","touching sneha","all of these"],c:[3]},
-{q:"Who gets more jealous faster?",o:["Sneha","Rishi","Both of them"],c:[2]},
-{q:"How many kids we want?",o:["4","2","1","69"],c:[2]},
-{q:"How much does Rishi loves you?",o:["0%","69%","100%","♾️"],c:[3]}
-];
-
-let qi=0,score=0;
+{q:"Who loves me more?",o:["Sneha","Bubu","Sonai"],a:[0,1,2]},
+{q:"What I love the most?",o:["irritating sneha","loving sneha","touching sneha","all of these"],a:[3]},
+{q:"Who gets jealous faster?",o:["Sneha","Rishi","Both of them"],a:[2]},
+{q:"How many kids we want?",o:["4","2","1","69"],a:[2]},
+{q:"How much does Rishi love you?",o:["0%","69%","100%","♾️"],a:[3]}
+]
 
 function startQuiz(){
-heartPopup.style.display="none";
-quizPopup.style.display="flex";
-qi=0;score=0;
-showQ();
+q=0;score=0;nextQ()
 }
 
-function showQ(){
-question.innerText=quiz[qi].q;
-options.innerHTML="";
-quiz[qi].o.forEach((t,i)=>{
-const d=document.createElement("div");
-d.className="option";
-d.innerText=t;
-d.onclick=()=>{
-if(quiz[qi].c.includes(i)) score++;
-d.classList.add("correct");
+function nextQ(){
+let data=quiz[q]
+let html=`<h3>${data.q}</h3>`
+data.o.forEach((opt,i)=>{
+html+=`<button onclick="answer(${i},this)">${opt}</button>`
+})
+document.getElementById('popupContent').innerHTML=html
+}
+
+function answer(i,btn){
+if(quiz[q].a.includes(i)){
+btn.classList.add('correct')
+score++
+burst()
+}
 setTimeout(()=>{
-qi++;
-qi<quiz.length?showQ():endQuiz();
-},600);
-};
-options.appendChild(d);
-});
+q++
+if(q<quiz.length)nextQ()
+else{
+showPopup(`Sneha scored ${score}/${quiz.length} 💕<br><br>No matter what your score is<br>You love me the most 😌❤️`)
+}
+},700)
 }
 
-function endQuiz(){
-quizPopup.innerHTML=`<div class="card">
-<h3>Sneha scored ${score}/5 💕</h3>
-<p><b>No matter what your score is<br>You love me the most 😌❤️</b></p>
-<button onclick="quizPopup.style.display='none'">Aww 🥹</button>
-</div>`;
+function burst(){
+for(let i=0;i<12;i++){
+let h=document.createElement('div')
+h.className='heart'
+h.innerHTML='❤️'
+h.style.left=Math.random()*100+'vw'
+h.style.top='80vh'
+document.body.appendChild(h)
+setTimeout(()=>h.remove(),4000)
+}
 }
 </script>
 
