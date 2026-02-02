@@ -20,7 +20,7 @@ align-items:center;
 }
 
 .container{
-background:white;
+background:#fff;
 width:90%;
 max-width:420px;
 padding:25px;
@@ -28,13 +28,12 @@ border-radius:30px;
 text-align:center;
 box-shadow:0 20px 40px rgba(0,0,0,.25);
 position:relative;
-overflow:hidden;
 }
 
 h1{color:#ff3366;margin:8px 0}
 h2{font-size:17px;color:#444;font-weight:400}
 
-img{
+#slider{
 width:100%;
 border-radius:20px;
 margin:15px 0;
@@ -42,12 +41,14 @@ transition:opacity .5s ease;
 }
 
 .buttons{
-display:flex;
-justify-content:center;
-gap:15px;
+position:relative;
+height:60px;
+margin-top:10px;
 }
 
-button{
+#yesBtn{
+background:#ff3366;
+color:white;
 border:none;
 border-radius:30px;
 padding:10px 22px;
@@ -55,14 +56,26 @@ font-size:14px;
 cursor:pointer;
 }
 
-#yesBtn{background:#ff3366;color:white}
-#noBtn{background:#eee;position:relative}
+#noBtn{
+position:absolute;
+right:0;
+top:0;
+background:#eee;
+border:none;
+border-radius:30px;
+padding:10px 22px;
+font-size:14px;
+cursor:pointer;
+}
 
 .gameBtn{
-margin-top:12px;
+margin-top:15px;
 background:#ffe6ee;
 border:1px solid #ff3366;
 color:#ff3366;
+border-radius:30px;
+padding:10px 22px;
+cursor:pointer;
 }
 
 .footer{
@@ -70,12 +83,57 @@ font-size:12px;
 color:#999;
 margin-top:10px;
 }
+
+/* POPUP */
+.popup{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.6);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:10;
+}
+
+.card{
+background:white;
+padding:22px;
+border-radius:25px;
+width:85%;
+max-width:360px;
+text-align:center;
+}
+
+/* HEART GAME */
+.heart{
+position:absolute;
+font-size:26px;
+top:-30px;
+animation:fall 3s linear forwards;
+cursor:pointer;
+}
+
+@keyframes fall{
+to{top:110%}
+}
+
+/* QUIZ */
+.option{
+background:#ffe6ee;
+margin:8px 0;
+padding:10px;
+border-radius:20px;
+cursor:pointer;
+}
+
+.correct{
+background:#6ee7a8 !important;
+}
 </style>
 </head>
 
 <body>
 
-<!-- MUSIC -->
 <audio id="bgMusic" loop>
   <source src="music.mp3.mp3" type="audio/mpeg">
 </audio>
@@ -91,79 +149,140 @@ margin-top:10px;
 <button id="noBtn">No 🙈</button>
 </div>
 
-<button class="gameBtn">Play a little game 🎮</button>
+<button class="gameBtn" id="gameBtn">Play a little game 🎮</button>
 
 <div class="footer">"Every moment with you feels like a dream come true"</div>
 </div>
 
+<!-- HEART GAME -->
+<div class="popup" id="heartPopup">
+<div class="card">
+<h3>Catch my hearts 💖</h3>
+<p id="heartScore">0 / 3</p>
+</div>
+</div>
+
+<!-- QUIZ -->
+<div class="popup" id="quizPopup">
+<div class="card">
+<h3 id="question"></h3>
+<div id="options"></div>
+</div>
+</div>
+
 <script>
-/* 🔊 MUSIC */
-const music = document.getElementById("bgMusic");
-document.addEventListener("click", () => {
-  music.play().catch(()=>{});
-}, { once: true });
+/* MUSIC */
+const music=document.getElementById("bgMusic");
+document.addEventListener("click",()=>music.play().catch(()=>{}),{once:true});
 
-/* 🖼️ IMAGE SLIDER */
-const imgs = ["pic1.jpg.jpeg","pic2.jpg.jpeg","pic3.jpg.jpeg"];
-let imgIndex = 0;
-const slider = document.getElementById("slider");
+/* SLIDER */
+const images=["pic1.jpg.jpeg","pic2.jpg.jpeg","pic3.jpg.jpeg"];
+let si=0;
+setInterval(()=>{
+slider.style.opacity=0;
+setTimeout(()=>{
+si=(si+1)%images.length;
+slider.src=images[si];
+slider.style.opacity=1;
+},400);
+},2500);
 
-setInterval(() => {
-  slider.style.opacity = 0;
-  setTimeout(() => {
-    imgIndex = (imgIndex + 1) % imgs.length;
-    slider.src = imgs[imgIndex];
-    slider.style.opacity = 1;
-  }, 400);
-}, 2500);
+/* NO BUTTON (SAFE) */
+const noBtn=document.getElementById("noBtn");
+const btnBox=document.querySelector(".buttons");
+let noClicks=0;
 
-/* 🙈 NO BUTTON FIX + DODGE */
-const noBtn = document.getElementById("noBtn");
-const container = document.querySelector(".container");
+noBtn.addEventListener("mouseenter",()=>{
+const maxX=btnBox.clientWidth-noBtn.offsetWidth;
+const x=Math.random()*maxX;
+noBtn.style.left=x+"px";
+});
 
-let noClicks = 0;
+noBtn.addEventListener("click",()=>{
+noClicks++;
+if(noClicks>=2){
+alert("HOW DARE YOU REJECTING MY OFFER 😾\n\nIts just for formality 😚\nOption NO is invalid 🥰");
+}
+});
 
-// Reset position so it never disappears
-noBtn.style.transform = "translate(0,0)";
+/* YES BUTTON */
+yesBtn.onclick=()=>alert("I knew it 😭❤️");
 
-function dodgeNoButton() {
-  const c = container.getBoundingClientRect();
-  const b = noBtn.getBoundingClientRect();
+/* GAME 1 */
+let hearts=0,interval;
+gameBtn.onclick=()=>{
+hearts=0;
+heartScore.innerText="0 / 3";
+heartPopup.style.display="flex";
+interval=setInterval(()=>{
+const h=document.createElement("div");
+h.className="heart";
+h.innerText="💖";
+h.style.left=Math.random()*80+"%";
+h.onclick=()=>{
+hearts++;
+heartScore.innerText=hearts+" / 3";
+h.remove();
+if(hearts>=3){
+clearInterval(interval);
+setTimeout(()=>{
+heartPopup.innerHTML=`<div class="card">
+<h3>Looks like my heart already belongs to you 😭❤️</h3>
+<button onclick="startQuiz()">Next and final game ➡️</button>
+</div>`;
+},300);
+}
+};
+heartPopup.appendChild(h);
+setTimeout(()=>h.remove(),3000);
+},800);
+};
 
-  const maxX = c.width - b.width - 10;
-  const maxY = c.height - b.height - 80;
+/* QUIZ */
+const quiz=[
+{q:"Who loves me more?",o:["Sneha","Bubu","Sonai"],c:[0,1,2]},
+{q:"What I love the most?",o:["irritating sneha","loving sneha","touching sneha","all of these"],c:[3]},
+{q:"Who gets more jealous faster?",o:["Sneha","Rishi","Both of them"],c:[2]},
+{q:"How many kids we want?",o:["4","2","1","69"],c:[2]},
+{q:"How much does Rishi loves you?",o:["0%","69%","100%","♾️"],c:[3]}
+];
 
-  const x = Math.random() * maxX;
-  const y = Math.random() * maxY;
+let qi=0,score=0;
 
-  noBtn.style.transform = `translate(${x}px, ${y}px)`;
+function startQuiz(){
+heartPopup.style.display="none";
+quizPopup.style.display="flex";
+qi=0;score=0;
+showQ();
 }
 
-noBtn.addEventListener("mouseenter", dodgeNoButton);
-noBtn.addEventListener("click", () => {
-  noClicks++;
-  if (noClicks >= 2) {
-    alert(
-      "HOW DARE YOU REJECTING MY OFFER 😾\n\n" +
-      "Its just for formality 😚\n" +
-      "Option NO is invalid 🥰"
-    );
-  }
+function showQ(){
+question.innerText=quiz[qi].q;
+options.innerHTML="";
+quiz[qi].o.forEach((t,i)=>{
+const d=document.createElement("div");
+d.className="option";
+d.innerText=t;
+d.onclick=()=>{
+if(quiz[qi].c.includes(i)) score++;
+d.classList.add("correct");
+setTimeout(()=>{
+qi++;
+qi<quiz.length?showQ():endQuiz();
+},600);
+};
+options.appendChild(d);
 });
+}
 
-/* ❤️ YES BUTTON WORKING */
-const yesBtn = document.getElementById("yesBtn");
-yesBtn.addEventListener("click", () => {
-  alert("I knew it 😭❤️ You’re my Valentine 💖");
-});
-
-/* 🎮 GAME BUTTON WORKING */
-const gameBtn = document.querySelector(".gameBtn");
-gameBtn.addEventListener("click", () => {
-  alert("Game will start here 🎮 (next step 😌)");
-});
+function endQuiz(){
+quizPopup.innerHTML=`<div class="card">
+<h3>Sneha scored ${score}/5 💕</h3>
+<p><b>No matter what your score is<br>You love me the most 😌❤️</b></p>
+<button onclick="quizPopup.style.display='none'">Aww 🥹</button>
+</div>`;
+}
 </script>
-
 
 </body>
 </html>
