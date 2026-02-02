@@ -4,153 +4,213 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sneha ❤️</title>
-
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-
 <style>
-*{box-sizing:border-box;font-family:Poppins}
-body{
-  margin:0;
+* { box-sizing: border-box; font-family: 'Poppins', sans-serif; margin:0; padding:0;}
+body {
   min-height:100vh;
   display:flex;
   justify-content:center;
   align-items:center;
-  background:linear-gradient(135deg,#ff6a88,#ff99ac);
+  background: linear-gradient(135deg, #ff9a9e, #fad0c4);
+  overflow-x:hidden;
 }
 
-.container{
-  background:#fff;
-  width:92%;
-  max-width:420px;
-  padding:22px;
-  border-radius:26px;
-  text-align:center;
-  box-shadow:0 20px 40px rgba(0,0,0,.25);
+/* Container Card */
+.container {
+  width: 92%;
+  max-width: 420px;
+  padding: 30px;
+  border-radius: 30px;
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+  text-align: center;
+  animation: fadeIn 1s ease forwards;
 }
 
-h1{color:#ff3366;margin-bottom:6px}
-h2{font-weight:400;margin-top:0}
+@keyframes fadeIn {
+  from {opacity:0; transform:translateY(20px);}
+  to {opacity:1; transform:translateY(0);}
+}
 
-img{
+h1 {
+  color: #ff3366;
+  font-size: 2.4rem;
+  margin-bottom: 10px;
+}
+
+h2 {
+  font-weight:400;
+  color:#fff;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  margin-bottom: 20px;
+}
+
+img#slider {
   width:100%;
-  height:260px;
-  object-fit:contain;
-  border-radius:20px;
-  background:#fff
+  height:280px;
+  object-fit:cover;
+  border-radius: 25px;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+  margin-bottom: 20px;
+  transition: transform 0.5s ease;
 }
 
-.buttons{
+img#slider:hover {
+  transform: scale(1.05);
+}
+
+/* Buttons */
+.buttons {
   display:flex;
   justify-content:center;
-  gap:18px;
-  margin:20px 0
+  gap:20px;
+  margin-bottom: 20px;
 }
 
-button{
+button {
   border:none;
-  border-radius:30px;
-  padding:12px 26px;
-  font-size:15px;
+  border-radius: 40px;
+  padding:12px 30px;
+  font-size:16px;
   cursor:pointer;
-  transition:.3s
+  transition: all 0.3s ease;
+  font-weight:600;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.15);
 }
 
-#yes{background:#ff3366;color:white}
-#no{background:#eee;color:#333;position:relative}
+#yes {
+  background: linear-gradient(135deg,#ff6a88,#ff99ac);
+  color:white;
+}
+#yes:hover {
+  box-shadow: 0 0 20px #ff99ac;
+  transform: translateY(-3px);
+}
 
-.action{
+#no {
+  background: rgba(255,255,255,0.8);
+  color:#333;
+  position:relative;
+}
+#no:hover {
+  transform: scale(1.05);
+}
+
+/* Action button */
+.action {
   width:100%;
-  margin-top:10px;
-  background:white;
-  border:2px solid #ff3366;
-  color:#ff3366
+  margin-top:15px;
+  background: rgba(255,255,255,0.3);
+  border: 2px solid #ff3366;
+  color: #ff3366;
+  font-weight:600;
+}
+.action:hover {
+  background: #ff3366;
+  color: #fff;
+  box-shadow: 0 0 20px #ff6a88;
+  transform: translateY(-3px);
 }
 
-.footer{
-  font-size:12px;
-  color:#777
+/* Footer */
+.footer {
+  font-size: 13px;
+  color:#fff;
+  margin-top:15px;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.2);
 }
 
-/* POPUP */
-.popup{
-  position:fixed;
+/* Popup */
+.popup {
+  position: fixed;
   inset:0;
-  background:rgba(0,0,0,.6);
+  background: rgba(0,0,0,0.6);
   display:none;
   justify-content:center;
   align-items:center;
-  z-index:99
+  z-index:99;
+  animation: popupFade 0.5s ease forwards;
 }
+@keyframes popupFade { from{opacity:0;} to{opacity:1;} }
 
-.card{
-  background:linear-gradient(135deg,#fff0f5,#ffe3ec);
-  padding:26px;
-  border-radius:26px;
-  width:90%;
-  max-width:380px;
+.card {
+  background: rgba(255,255,255,0.25);
+  backdrop-filter: blur(15px);
+  padding:30px;
+  border-radius: 30px;
+  width: 90%;
+  max-width: 400px;
   text-align:center;
-  min-height:320px;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.25);
+  position: relative;
 }
 
-.okay{
-  margin-top:15px;
-  background:linear-gradient(135deg,#ff3366,#ff6a88);
+.okay {
+  margin-top:20px;
+  background: linear-gradient(135deg,#ff3366,#ff6a88);
   color:white;
-  padding:10px 28px;
-  border-radius:30px;
-  box-shadow:0 0 12px rgba(255,51,102,.6)
+  padding:12px 30px;
+  border-radius:40px;
+  font-weight:600;
+  box-shadow:0 5px 20px rgba(255,51,102,0.6);
+  cursor:pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
+.okay:hover { transform: translateY(-3px); box-shadow:0 0 25px #ff6a88; }
 
-/* HEART GAME */
+/* Heart Game */
 .game-area{
   position:relative;
   height:280px;
-  overflow:hidden
+  overflow:hidden;
 }
-
 .heart{
   position:absolute;
   bottom:-40px;
   font-size:28px;
   cursor:pointer;
-  animation:fly 3s linear forwards
+  animation:fly 3s linear forwards;
 }
-
 @keyframes fly{
-  to{bottom:320px}
+  to {bottom:320px;}
 }
 
-/* QUIZ */
+/* Quiz buttons */
 .quiz-btn{
   display:block;
   width:100%;
-  margin:8px 0;
-  padding:10px;
-  border-radius:20px;
+  margin:10px 0;
+  padding:12px;
+  border-radius:25px;
   border:2px solid #ff6a88;
-  background:white
+  background:rgba(255,255,255,0.8);
+  font-weight:600;
+  cursor:pointer;
+  transition: all 0.3s ease;
 }
+.quiz-btn:hover {background:#ff6a88;color:#fff;}
 
+/* Correct answer */
 .quiz-btn.correct{
   background:#4CAF50;
   color:white;
-  border:none
+  border:none;
 }
 
-/* HEART BLAST */
+/* Heart blast animation */
 .blast{
   position:absolute;
-  font-size:20px;
-  animation:pop 1s forwards
+  font-size:22px;
+  animation:pop 1s forwards;
 }
-
 @keyframes pop{
-  0%{transform:scale(1);opacity:1}
-  100%{transform:scale(2);opacity:0}
+  0% {transform:scale(1); opacity:1;}
+  100%{transform:scale(2); opacity:0;}
 }
 </style>
 </head>
-
 <body>
 
 <audio id="bgMusic" src="music.mp3.mp3" loop></audio>
@@ -185,16 +245,13 @@ document.addEventListener("click",()=>{
 /* IMAGE SLIDER */
 const pics=["pic1.jpg.jpeg","pic2.jpg.jpeg","pic3.jpg.jpeg"];
 let pi=0;
-setInterval(()=>{
-  pi=(pi+1)%pics.length;
-  document.getElementById("slider").src=pics[pi];
-},3000);
+setInterval(()=>{ pi=(pi+1)%pics.length; document.getElementById("slider").src=pics[pi]; },3000);
 
 /* POPUP FUNCTIONS */
 const popup=document.getElementById("popup");
 const content=document.getElementById("popupContent");
-function openPopup(html){content.innerHTML=html;popup.style.display="flex"}
-function closePopup(){popup.style.display="none"}
+function openPopup(html){content.innerHTML=html;popup.style.display="flex";}
+function closePopup(){popup.style.display="none";}
 
 /* YES BUTTON */
 document.getElementById("yes").onclick=()=>openPopup(`
@@ -207,7 +264,7 @@ document.getElementById("yes").onclick=()=>openPopup(`
 let noCount=0;
 document.getElementById("no").onmouseover=e=>{
   noCount++;
-  e.target.style.transform=`translate(${Math.random()*100-50}px,${Math.random()*50-25}px)`;
+  e.target.style.transform=`translate(${Math.random()*120-60}px,${Math.random()*60-30}px)`;
   if(noCount===2){
     openPopup(`
       <h3>HOW DARE YOU 😾</h3>
@@ -230,8 +287,7 @@ function startHeartGame(){
 
   let interval=setInterval(()=>{
     const h=document.createElement("div");
-    h.className="heart";
-    h.innerText="❤️";
+    h.className="heart"; h.innerText="❤️";
     h.style.left=Math.random()*90+"%";
     h.onclick=()=>{
       caught++;
@@ -271,14 +327,11 @@ function showQuiz(){
 }
 
 function answer(i, btn){
-  const q=quiz[qi];
+  const q = quiz[qi];
   if(q.c.includes(i)) score++;
   btn.classList.add("correct");
   blast(btn);
-  setTimeout(()=>{
-    qi++;
-    qi<quiz.length ? showQuiz() : result();
-  },700);
+  setTimeout(()=>{qi++; qi<quiz.length?showQuiz():result();},700);
 }
 
 function blast(el){
@@ -303,6 +356,5 @@ function result(){
   `);
 }
 </script>
-
 </body>
 </html>
