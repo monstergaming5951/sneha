@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Valentine 💖</title>
+<title>Sneha ❤️</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
@@ -24,18 +24,21 @@ background:white;
 width:90%;
 max-width:420px;
 padding:25px;
-border-radius:28px;
+border-radius:30px;
 text-align:center;
 box-shadow:0 20px 40px rgba(0,0,0,.25);
+position:relative;
+overflow:hidden;
 }
 
-h1{color:#ff3366;margin:5px 0}
-h2{font-size:17px;font-weight:400;color:#444}
+h1{color:#ff3366;margin:8px 0}
+h2{font-size:17px;color:#444;font-weight:400}
 
 img{
 width:100%;
 border-radius:20px;
 margin:15px 0;
+transition:opacity .5s ease;
 }
 
 .buttons{
@@ -53,7 +56,7 @@ cursor:pointer;
 }
 
 #yesBtn{background:#ff3366;color:white}
-#noBtn{background:#eee}
+#noBtn{background:#eee;position:relative}
 
 .gameBtn{
 margin-top:12px;
@@ -62,226 +65,78 @@ border:1px solid #ff3366;
 color:#ff3366;
 }
 
-/* POPUP */
-.popup{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.6);
-display:none;
-justify-content:center;
-align-items:center;
-z-index:10;
-}
-
-.card{
-background:white;
-width:85%;
-max-width:360px;
-padding:22px;
-border-radius:25px;
-text-align:center;
-}
-
-/* HEART GAME */
-.heart{
-position:absolute;
-font-size:28px;
-animation:fall 3s linear forwards;
-cursor:pointer;
-}
-
-@keyframes fall{
-from{top:-30px}
-to{top:110%}
-}
-
-/* QUIZ */
-.option{
-background:#ffe6ee;
-margin:8px 0;
-padding:10px;
-border-radius:20px;
-}
-
-.correct{
-background:#6ee7a8 !important;
-color:#065f46;
-}
-
-/* HEART BLAST */
-.blast{
-position:absolute;
-font-size:18px;
-animation:blast 1s ease-out forwards;
-}
-
-@keyframes blast{
-from{transform:scale(1);opacity:1}
-to{transform:scale(2);opacity:0}
+.footer{
+font-size:12px;
+color:#999;
+margin-top:10px;
 }
 </style>
 </head>
 
 <body>
 
+<!-- MUSIC -->
+<audio id="bgMusic" loop>
+  <source src="music.mp3.mp3" type="audio/mpeg">
+</audio>
+
 <div class="container">
 <h1>❤️ Sneha ❤️</h1>
 <h2>Will you be my Valentine?</h2>
 
-<img src="pic1.jpg.jpeg">
+<img id="slider" src="pic1.jpg.jpeg">
 
 <div class="buttons">
 <button id="yesBtn">Yes 💖</button>
 <button id="noBtn">No 🙈</button>
 </div>
 
-<button class="gameBtn" onclick="startHeartGame()">Play a little game 🎮</button>
-</div>
+<button class="gameBtn">Play a little game 🎮</button>
 
-<!-- HEART GAME -->
-<div class="popup" id="heartPopup">
-<div class="card">
-<h3>Catch my hearts 💖</h3>
-<p>Catch 3 hearts to win</p>
-<p id="heartScore">0 / 3</p>
-</div>
-</div>
-
-<!-- QUIZ GAME -->
-<div class="popup" id="quizPopup">
-<div class="card">
-<h3 id="question"></h3>
-<div id="options"></div>
-</div>
+<div class="footer">"Every moment with you feels like a dream come true"</div>
 </div>
 
 <script>
-/* GAME 1 – CATCH THE HEART */
-let heartsCaught=0;
-let heartInterval;
+/* 🔊 MUSIC — starts on first interaction (browser-safe) */
+const music=document.getElementById("bgMusic");
+document.addEventListener("click",()=>{
+  music.play().catch(()=>{});
+},{once:true});
 
-function startHeartGame(){
-heartsCaught=0;
-heartScore.innerText="0 / 3";
-heartPopup.style.display="flex";
-heartInterval=setInterval(dropHeart,800);
+/* 🖼️ IMAGE SLIDER */
+const imgs=["pic1.jpg.jpeg","pic2.jpg.jpeg","pic3.jpg.jpeg"];
+let i=0;
+const slider=document.getElementById("slider");
+
+setInterval(()=>{
+  slider.style.opacity=0;
+  setTimeout(()=>{
+    i=(i+1)%imgs.length;
+    slider.src=imgs[i];
+    slider.style.opacity=1;
+  },400);
+},2500);
+
+/* 🙈 NO BUTTON DODGE + ANGRY MESSAGE */
+const noBtn=document.getElementById("noBtn");
+const box=document.querySelector(".container");
+let noCount=0;
+
+function moveNo(){
+  const b=box.getBoundingClientRect();
+  const n=noBtn.getBoundingClientRect();
+  const x=Math.random()*(b.width-n.width);
+  const y=Math.random()*(b.height-n.height-80);
+  noBtn.style.transform=`translate(${x}px,${y}px)`;
 }
 
-function dropHeart(){
-const heart=document.createElement("div");
-heart.className="heart";
-heart.innerHTML="💖";
-heart.style.left=Math.random()*80+"%";
-heart.style.top="-30px";
-
-heart.onclick=()=>{
-heartsCaught++;
-heartScore.innerText=heartsCaught+" / 3";
-heart.remove();
-if(heartsCaught>=3){
-clearInterval(heartInterval);
-setTimeout(winHeartGame,300);
-}
-};
-
-heartPopup.appendChild(heart);
-setTimeout(()=>heart.remove(),3000);
-}
-
-function winHeartGame(){
-heartPopup.innerHTML=`
-<div class="card">
-<h3>Looks like my heart already belongs to you 😭❤️</h3>
-<button onclick="nextGame()">Next and final game ➡️</button>
-</div>`;
-}
-
-function nextGame(){
-heartPopup.style.display="none";
-startQuiz();
-}
-
-/* GAME 2 – QUIZ */
-const quiz=[
-{
-q:"Who loves me more?",
-o:["Sneha","Bubu","Sonai"],
-c:[0,1,2]
-},
-{
-q:"What I love the most?",
-o:["irritating sneha","loving sneha","touching sneha","all of these"],
-c:[3]
-},
-{
-q:"Who gets more jealous faster?",
-o:["Sneha","Rishi","Both of them"],
-c:[2]
-},
-{
-q:"How many kids we want?",
-o:["4","2","1","69"],
-c:[2]
-},
-{
-q:"How much does Rishi loves you?",
-o:["0%","69%","100%","♾️"],
-c:[3]
-}
-];
-
-let qi=0,score=0;
-
-function startQuiz(){
-qi=0;score=0;
-quizPopup.style.display="flex";
-showQuestion();
-}
-
-function showQuestion(){
-question.innerText=quiz[qi].q;
-options.innerHTML="";
-quiz[qi].o.forEach((txt,i)=>{
-const div=document.createElement("div");
-div.className="option";
-div.innerText=txt;
-div.onclick=()=>selectOption(div,i);
-options.appendChild(div);
+noBtn.addEventListener("mouseenter",moveNo);
+noBtn.addEventListener("click",()=>{
+  noCount++;
+  if(noCount>=2){
+    alert("HOW DARE YOU REJECTING MY OFFER 😾\n\nIts just for formality 😚\nOption NO is invalid 🥰");
+  }
 });
-}
-
-function selectOption(el,i){
-if(quiz[qi].c.includes(i)) score++;
-el.classList.add("correct");
-blastHearts(el);
-setTimeout(()=>{
-qi++;
-if(qi<quiz.length) showQuestion();
-else endQuiz();
-},700);
-}
-
-function blastHearts(el){
-for(let i=0;i<6;i++){
-const b=document.createElement("div");
-b.className="blast";
-b.innerText="💖";
-b.style.left=(el.offsetLeft+Math.random()*80)+"px";
-b.style.top=(el.offsetTop+10)+"px";
-quizPopup.appendChild(b);
-setTimeout(()=>b.remove(),1000);
-}
-}
-
-function endQuiz(){
-quizPopup.innerHTML=`
-<div class="card">
-<h3>Sneha scored ${score} / 5 💕</h3>
-<p><b>No matter what your score is<br>
-You love me the most 😌❤️</b></p>
-<button onclick="quizPopup.style.display='none'">Aww 🥹</button>
-</div>`;
-}
 </script>
 
 </body>
