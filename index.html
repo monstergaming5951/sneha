@@ -5,8 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Sneha ❤️</title>
 
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
 <style>
-*{font-family:Poppins;box-sizing:border-box}
+*{box-sizing:border-box;font-family:Poppins}
 body{
 margin:0;min-height:100vh;
 display:flex;justify-content:center;align-items:center;
@@ -15,17 +17,34 @@ background:linear-gradient(135deg,#ff6a88,#ff99ac)
 .container{
 background:#fff;width:92%;max-width:420px;
 padding:22px;border-radius:28px;text-align:center;
-box-shadow:0 20px 40px rgba(0,0,0,.25)
+box-shadow:0 25px 50px rgba(0,0,0,.25)
 }
-img{width:100%;border-radius:22px}
+h1{color:#ff3366}
+h2{font-weight:400}
+
+img{
+width:100%;
+border-radius:22px;
+object-fit:contain
+}
+
+.buttons{
+display:flex;justify-content:center;gap:18px;margin:20px 0
+}
 button{
 border:none;border-radius:30px;
-padding:12px 24px;margin:8px;
-font-size:15px;cursor:pointer
+padding:12px 26px;font-size:15px;
+cursor:pointer;
+transition:.3s
 }
-.yes{background:#ff3366;color:white}
-.no{background:#eee}
-.action{border:2px solid #ff3366;background:white;color:#ff3366;width:100%}
+#yes{background:#ff3366;color:white}
+#no{background:#eee;color:#333;position:relative}
+
+.action{
+width:100%;margin-top:10px;
+background:white;border:2px solid #ff3366;
+color:#ff3366
+}
 
 .popup{
 position:fixed;inset:0;
@@ -34,40 +53,47 @@ display:none;justify-content:center;align-items:center;z-index:99
 }
 .card{
 background:linear-gradient(135deg,#fff0f5,#ffe3ec);
-padding:24px;border-radius:26px;
+padding:26px;border-radius:26px;
 width:90%;max-width:380px;text-align:center
 }
 .okay{
+margin-top:15px;
 background:linear-gradient(135deg,#ff3366,#ff6a88);
-color:white;padding:10px 28px;border-radius:30px;
-box-shadow:0 0 14px rgba(255,51,102,.6)
+color:white;padding:10px 28px;
+border-radius:30px;
+box-shadow:0 0 12px rgba(255,51,102,.6)
 }
 
 /* HEART GAME */
-.game-area{height:280px;position:relative;overflow:hidden}
+.game-area{
+position:relative;height:280px;overflow:hidden
+}
 .heart{
-position:absolute;bottom:-40px;font-size:28px;
-animation:fly 3s linear forwards;cursor:pointer
+position:absolute;bottom:-40px;
+font-size:28px;cursor:pointer;
+animation:fly 3s linear forwards
 }
 @keyframes fly{to{bottom:320px}}
 
 /* QUIZ */
-.option{
-display:block;width:100%;
-margin:8px 0;padding:12px;
-border-radius:25px;border:2px solid #ff3366;
-background:white;color:#ff3366
+.quiz-btn{
+display:block;width:100%;margin:8px 0;
+padding:10px;border-radius:20px;
+border:2px solid #ff6a88;
+background:white
 }
-.correct{
-background:#2ecc71!important;color:white!important
+.quiz-btn.correct{
+background:#4CAF50;color:white;border:none
 }
+
+/* HEART BLAST */
 .blast{
-animation:pop .4s ease
+position:absolute;font-size:20px;
+animation:pop 1s forwards
 }
 @keyframes pop{
-0%{transform:scale(1)}
-50%{transform:scale(1.2)}
-100%{transform:scale(1)}
+0%{transform:scale(1);opacity:1}
+100%{transform:scale(2);opacity:0}
 }
 </style>
 </head>
@@ -75,75 +101,76 @@ animation:pop .4s ease
 <body>
 
 <div class="container">
-<h2>❤️ Sneha ❤️</h2>
-<p>Will you be my Valentine?</p>
+<h1>❤️ Sneha ❤️</h1>
+<h2>Will you be my Valentine?</h2>
 
 <img src="your-image.jpg">
 
-<button class="yes" onclick="yesClick()">Yes 💖</button>
-<button class="no" id="no">No 🙈</button>
+<div class="buttons">
+<button id="yes">Yes 💖</button>
+<button id="no">No 🙈</button>
+</div>
 
 <button class="action" onclick="startHeartGame()">Play a little game 🎮</button>
+
+<p style="font-size:12px;color:#777">Every moment with you feels like a dream come true</p>
 </div>
 
-<!-- POPUP -->
 <div class="popup" id="popup">
-<div class="card" id="content"></div>
+<div class="card" id="popupContent"></div>
 </div>
-
-<audio id="clickSound" src="https://assets.mixkit.co/sfx/preview/mixkit-soft-click-1123.mp3"></audio>
-<audio id="heartSound" src="https://assets.mixkit.co/sfx/preview/mixkit-game-ball-tap-2073.mp3"></audio>
 
 <script>
 const popup=document.getElementById("popup")
-const content=document.getElementById("content")
-const clickSound=document.getElementById("clickSound")
-const heartSound=document.getElementById("heartSound")
+const content=document.getElementById("popupContent")
 
-function play(s){s.currentTime=0;s.play()}
-function open(html){content.innerHTML=html;popup.style.display="flex"}
-function close(){popup.style.display="none"}
+function openPopup(html){
+content.innerHTML=html
+popup.style.display="flex"
+}
+function closePopup(){popup.style.display="none"}
 
-/* NO RUNS */
+/* YES */
+document.getElementById("yes").onclick=()=>{
+openPopup(`
+<h3>I knew it 😭❤️</h3>
+<p>You just made my whole world brighter</p>
+<button class="okay" onclick="closePopup()">OKAY</button>
+`)
+}
+
+/* NO RUNS AWAY */
 document.getElementById("no").onmouseover=e=>{
 e.target.style.transform=
 `translate(${Math.random()*120-60}px,${Math.random()*60-30}px)`
 }
 
-/* YES */
-function yesClick(){
-play(clickSound)
-open(`<h3>I knew it 😭❤️</h3>
-<button class="okay" onclick="close()">OKAY</button>`)
-}
-
-/* GAME 1 */
+/* GAME 1 – HEARTS */
 function startHeartGame(){
-play(clickSound)
 let caught=0
-open(`
-<h3>Catch 3 hearts ❤️</h3>
-<p id="count">0 / 3</p>
+openPopup(`
+<h3>Catch 3 hearts 💖</h3>
+<p id="count">Hearts: 0 / 3</p>
 <div class="game-area" id="area"></div>
 `)
 const area=document.getElementById("area")
-const count=document.getElementById("count")
+const counter=document.getElementById("count")
 
-const interval=setInterval(()=>{
+let interval=setInterval(()=>{
 const h=document.createElement("div")
 h.className="heart"
 h.innerText="❤️"
 h.style.left=Math.random()*90+"%"
 h.onclick=()=>{
-play(heartSound)
-caught++;count.innerText=caught+" / 3"
+caught++
+counter.innerText="Hearts: "+caught+" / 3"
 h.remove()
 if(caught===3){
 clearInterval(interval)
 setTimeout(()=>{
-open(`
-<h3>You won 😘</h3>
-<button class="okay" onclick="startQuiz()">Next and final game 💘</button>
+openPopup(`
+<h3>Looks like my heart already belongs to you 😭❤️</h3>
+<button class="okay" onclick="startQuiz()">Next and final game ➡️</button>
 `)
 },400)
 }
@@ -151,39 +178,83 @@ area.appendChild(h)
 },700)
 }
 
-/* GAME 2 – QUIZ */
-let score=0,q=0
+/* GAME 2 – WHAT I LOVE THE MOST */
 const quiz=[
-{q:"Who loves me more?",o:["Sneha","Bubu","Sonai"],a:[0,1,2]},
-{q:"What I love the most?",o:["irritating sneha","loving sneha","touching sneha","all of these"],a:[3]},
-{q:"Who gets more jealous faster?",o:["Sneha","Rishi","Both of them"],a:[2]},
-{q:"How many kids we want?",o:["4","2","1","69"],a:[2]},
-{q:"How much does Rishi loves you?",o:["0%","69%","100%","♾️"],a:[3]}
+{
+q:"Who loves me more?",
+o:["Sneha","Bubu","Sonai"],
+c:[0,1,2]
+},
+{
+q:"What I love the most?",
+o:["irritating sneha","loving sneha","touching sneha","all of these"],
+c:[3]
+},
+{
+q:"Who gets more jealous faster?",
+o:["Sneha","Rishi","Both of them"],
+c:[2]
+},
+{
+q:"How many kids we want?",
+o:["4","2","1","69"],
+c:[2]
+},
+{
+q:"How much does Rishi loves you?",
+o:["0%","69%","100%","♾️"],
+c:[3]
+}
 ]
 
-function startQuiz(){score=0;q=0;showQ()}
+let qi=0,score=0
 
-function showQ(){
-open(`<h3>${quiz[q].q}</h3>`+
-quiz[q].o.map((t,i)=>
-`<button class="option" onclick="pick(this,${i})">${t}</button>`
-).join(""))
+function startQuiz(){
+qi=0;score=0
+showQuiz()
 }
 
-function pick(btn,i){
-play(clickSound)
-if(quiz[q].a.includes(i)){
-btn.classList.add("correct","blast")
-score++
+function showQuiz(){
+const q=quiz[qi]
+openPopup(`
+<h3>${q.q}</h3>
+${q.o.map((op,i)=>`
+<button class="quiz-btn" onclick="answer(${i},this)">${op}</button>
+`).join("")}
+`)
 }
+
+function answer(i,btn){
+const q=quiz[qi]
+if(q.c.includes(i)){score++}
+btn.classList.add("correct")
+blast(btn)
 setTimeout(()=>{
-q++
-q<quiz.length?showQ():
-open(`<h3>Sneha scored ${score}/5 💕</h3>
-<p>No matter what your score is<br>
-You love me the most 😌❤️</p>
-<button class="okay" onclick="close()">OKAY</button>`)
-},500)
+qi++
+qi<quiz.length?showQuiz():result()
+},700)
+}
+
+function blast(el){
+for(let i=0;i<8;i++){
+const b=document.createElement("div")
+b.className="blast"
+b.innerText="❤️"
+b.style.left=Math.random()*100+"%"
+b.style.top=Math.random()*100+"%"
+el.appendChild(b)
+setTimeout(()=>b.remove(),1000)
+}
+}
+
+function result(){
+openPopup(`
+<h3>Game complete 💕</h3>
+<p>Sneha scored ${score} / 5</p>
+<p><b>No matter what your score is<br>
+You love me the most 😌❤️</b></p>
+<button class="okay" onclick="closePopup()">OKAY</button>
+`)
 }
 </script>
 
