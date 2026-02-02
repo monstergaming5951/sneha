@@ -182,7 +182,7 @@ document.addEventListener("click",()=>{
   music.play().catch(e=>console.log("Music play blocked", e));
 },{once:true})
 
-/* SLIDER */
+/* IMAGE SLIDER */
 const pics=["pic1.jpg.jpeg","pic2.jpg.jpeg","pic3.jpg.jpeg"];
 let pi=0;
 setInterval(()=>{
@@ -190,20 +190,20 @@ setInterval(()=>{
   document.getElementById("slider").src=pics[pi];
 },3000);
 
-/* POPUP */
+/* POPUP FUNCTIONS */
 const popup=document.getElementById("popup");
 const content=document.getElementById("popupContent");
 function openPopup(html){content.innerHTML=html;popup.style.display="flex"}
 function closePopup(){popup.style.display="none"}
 
-/* YES */
+/* YES BUTTON */
 document.getElementById("yes").onclick=()=>openPopup(`
   <h3>I knew it 😭❤️</h3>
   <p>You just made my whole world brighter</p>
   <button class="okay" onclick="closePopup()">OKAY</button>
 `);
 
-/* NO */
+/* NO BUTTON */
 let noCount=0;
 document.getElementById("no").onmouseover=e=>{
   noCount++;
@@ -249,18 +249,18 @@ function startHeartGame(){
   },700);
 }
 
-/* QUIZ */
+/* QUIZ GAME */
 const quiz=[
-  {q:"Who loves me more?",o:["Sneha","Bubu","Sonai"],c:[0]},
-  {q:"What I love the most?",o:["irritating sneha","loving sneha","touching sneha","all of these"],c:[3]},
-  {q:"Who gets more jealous faster?",o:["Sneha","Rishi","Both of them"],c:[2]},
-  {q:"How many kids we want?",o:["4","2","1","69"],c:[1]},
-  {q:"How much does Rishi loves you?",o:["0%","69%","100%","♾️"],c:[3]}
+  {q:"Who loves me more?", o:["Sneha","Bubu","Sonai"], c:[0]},
+  {q:"What I love the most?", o:["irritating sneha","loving sneha","touching sneha","all of these"], c:[3]},
+  {q:"Who gets more jealous faster?", o:["Sneha","Rishi","Both of them"], c:[2]},
+  {q:"How many kids we want?", o:["4","2","1","69"], c:[1]},
+  {q:"How much does Rishi loves you?", o:["0%","69%","100%","♾️"], c:[3]}
 ];
 
-let qi=0,score=0;
+let qi=0, score=0;
 
-function startQuiz(){qi=0;score=0;showQuiz()}
+function startQuiz(){qi=0; score=0; showQuiz();}
 
 function showQuiz(){
   const q=quiz[qi];
@@ -270,15 +270,15 @@ function showQuiz(){
   `);
 }
 
-function answer(i,btn){
+function answer(i, btn){
   const q=quiz[qi];
-  if(q.c.includes(i))score++;
+  if(q.c.includes(i)) score++;
   btn.classList.add("correct");
   blast(btn);
   setTimeout(()=>{
     qi++;
-    qi<quiz.length?showQuiz():result()
-  },700)
+    qi<quiz.length ? showQuiz() : result();
+  },700);
 }
 
 function blast(el){
@@ -296,7 +296,7 @@ function blast(el){
 function result(){
   openPopup(`
     <h3>Game complete 💕</h3>
-    <p>Sneha scored ${score} / 5</p>
+    <p>Sneha scored ${score} / ${quiz.length}</p>
     <p><b>No matter what your score is<br>
     You love me the most 😌❤️</b></p>
     <button class="okay" onclick="closePopup()">OKAY</button>
