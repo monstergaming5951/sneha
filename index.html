@@ -12,37 +12,43 @@
 body{
 margin:0;min-height:100vh;
 display:flex;justify-content:center;align-items:center;
-background:linear-gradient(135deg,#ff758c,#ff7eb3)
+background:linear-gradient(135deg,#ff6a88,#ff99ac)
 }
 .container{
-background:#fff;width:90%;max-width:420px;
-padding:25px;border-radius:30px;text-align:center;
-box-shadow:0 20px 40px rgba(0,0,0,.25)
+background:#fff;width:92%;max-width:420px;
+padding:22px;border-radius:28px;text-align:center;
+box-shadow:0 25px 50px rgba(0,0,0,.25)
 }
-h1{color:#ff3366;margin-bottom:5px}
+h1{color:#ff3366;margin-bottom:4px}
 h2{font-weight:400;margin-bottom:15px}
 
-/* SLIDER */
+/* SLIDER (NO CROP) */
 .slider{
-width:100%;height:220px;
-border-radius:20px;overflow:hidden;margin-bottom:20px
+width:100%;height:240px;
+border-radius:20px;overflow:hidden;
+background:#000
 }
 .slider img{
-width:100%;height:100%;object-fit:cover;
+width:100%;height:100%;
+object-fit:contain;
 display:none
 }
 .slider img.active{display:block}
 
 /* BUTTONS */
 .buttons{
-display:flex;justify-content:center;gap:15px;margin-bottom:15px
+display:flex;justify-content:center;
+gap:16px;margin:18px 0
 }
 button{
 border:none;border-radius:30px;
-padding:12px 24px;font-size:15px;cursor:pointer
+padding:12px 26px;font-size:15px;
+cursor:pointer;transition:.25s
 }
 #yesBtn{background:#ff3366;color:#fff}
+#yesBtn:hover{transform:scale(1.08)}
 #noBtn{background:#eee;color:#333;position:relative}
+
 #gameBtn{
 background:#fff;border:2px solid #ff3366;
 color:#ff3366;width:100%
@@ -51,30 +57,40 @@ color:#ff3366;width:100%
 /* POPUP */
 .popup{
 position:fixed;inset:0;
-background:rgba(0,0,0,.6);
-display:none;justify-content:center;align-items:center;z-index:10
+background:rgba(0,0,0,.65);
+display:none;justify-content:center;align-items:center;z-index:99
 }
 .popup-card{
-background:#fff;padding:25px;border-radius:25px;
-width:90%;max-width:380px;text-align:center
+background:linear-gradient(135deg,#fff0f5,#ffe3ec);
+padding:26px;border-radius:26px;
+width:90%;max-width:380px;text-align:center;
+animation:pop .4s ease
+}
+@keyframes pop{
+from{transform:scale(.7);opacity:0}
+to{transform:scale(1);opacity:1}
+}
+.popup-card h3{color:#ff3366;margin-bottom:10px}
+.popup-card button{
+margin-top:15px;background:#ff3366;color:#fff
 }
 
-/* HEARTS */
-.heart{
-position:fixed;font-size:20px;
-animation:float 4s linear forwards
+/* HEART GAME */
+.heart-area span{
+font-size:32px;cursor:pointer;
+margin:6px;display:inline-block;
+animation:float 1.8s linear infinite
 }
 @keyframes float{
-from{transform:translateY(0);opacity:1}
-to{transform:translateY(-120vh);opacity:0}
+from{transform:translateY(0)}
+to{transform:translateY(-120px)}
 }
 
-/* GAME */
-.game-area{display:none}
-.heart-game span{
-font-size:30px;cursor:pointer;margin:10px
+/* QUIZ */
+.quiz button{
+display:block;width:100%;
+margin:8px 0
 }
-.quiz button{display:block;width:100%;margin:8px 0}
 .correct{background:#4caf50!important;color:#fff}
 </style>
 </head>
@@ -86,8 +102,7 @@ font-size:30px;cursor:pointer;margin:10px
 </audio>
 
 <div class="container">
-
-<h1>❤️ Mrs.Sneha Saha ❤️</h1>
+<h1>❤️ Sneha ❤️</h1>
 <h2>Will you be my Valentine?</h2>
 
 <div class="slider">
@@ -106,12 +121,10 @@ font-size:30px;cursor:pointer;margin:10px
 <p style="font-size:12px;color:#777;margin-top:10px">
 "Every moment with you feels like a dream come true"
 </p>
-
 </div>
 
-<!-- POPUP -->
 <div class="popup" id="popup">
-<div class="popup-card" id="popupContent"></div>
+<div class="popup-card" id="popupCard"></div>
 </div>
 
 <script>
@@ -122,65 +135,84 @@ document.getElementById('music').play().catch(()=>{})
 
 /* SLIDER */
 let slides=document.querySelectorAll('.slider img')
-let s=0
+let i=0
 setInterval(()=>{
-slides[s].classList.remove('active')
-s=(s+1)%slides.length
-slides[s].classList.add('active')
-},3000)
+slides[i].classList.remove('active')
+i=(i+1)%slides.length
+slides[i].classList.add('active')
+},2800)
 
-/* NO BUTTON RUN */
+/* POPUP */
+function openPopup(html){
+popup.style.display='flex'
+popupCard.innerHTML=html
+}
+function closePopup(){
+popup.style.display='none'
+}
+
+/* YES */
+yesBtn.onclick=()=>{
+openPopup(`
+<h3>I knew it 😭❤️</h3>
+<p>You are my Valentine forever 💞</p>
+<button onclick="closePopup()">OK</button>
+`)
+}
+
+/* NO BUTTON SAFE RUN */
 let noCount=0
-const noBtn=document.getElementById('noBtn')
 noBtn.addEventListener('mouseenter',()=>{
-noBtn.style.transform=`translate(${Math.random()*100-50}px,${Math.random()*60-30}px)`
+noBtn.style.transform=
+`translate(${Math.random()*60-30}px,${Math.random()*30-15}px)`
 })
 noBtn.onclick=()=>{
 noCount++
 if(noCount>=2){
-showPopup("HOW DARE YOU 😾<br><br>It's just for formality 😚<br>NO is invalid 🥰")
+openPopup(`
+<h3>HOW DARE YOU 😾</h3>
+<p>It's just for formality 😚<br>
+NO is invalid 🥰</p>
+<button onclick="closePopup()">OK</button>
+`)
 }
 }
 
-/* YES */
-document.getElementById('yesBtn').onclick=()=>{
-showPopup("I knew it 😭❤️<br><br>You are my Valentine forever 💞")
-}
-
-/* POPUP */
-function showPopup(html){
-document.getElementById('popupContent').innerHTML=
-html+"<br><br><button onclick='closePopup()'>OK</button>"
-document.getElementById('popup').style.display='flex'
-}
-function closePopup(){
-document.getElementById('popup').style.display='none'
-}
-
-/* GAME BUTTON */
-document.getElementById('gameBtn').onclick=startHeartGame
+/* GAME */
+gameBtn.onclick=startHeartGame
+let caught=0
 
 function startHeartGame(){
-showPopup(`
-<h3>Catch 3 hearts 💘</h3>
-<div class="heart-game" id="heartGame"></div>
+caught=0
+openPopup(`
+<h3>Catch 3 hearts ❤️</h3>
+<p>Hearts caught: <b id="count">0</b>/3</p>
+<div class="heart-area" id="heartArea"></div>
 `)
-let score=0
-let area=document.getElementById('heartGame')
+spawnHearts()
+}
+
+function spawnHearts(){
+let area=document.getElementById('heartArea')
 let interval=setInterval(()=>{
 let h=document.createElement('span')
 h.innerHTML='❤️'
 h.onclick=()=>{
-score++
+caught++
+document.getElementById('count').innerText=caught
 h.remove()
-if(score>=3){
+if(caught>=3){
 clearInterval(interval)
-showPopup("Looks like my heart already belongs to you 😭❤️<br><br><button onclick='startQuiz()'>Next & Final Game</button>")
+openPopup(`
+<h3>My heart is yours 😭❤️</h3>
+<p>Looks like my heart already belongs to you</p>
+<button onclick="startQuiz()">Next & Final Game</button>
+`)
 }
 }
 area.appendChild(h)
 setTimeout(()=>h.remove(),2000)
-},600)
+},500)
 }
 
 /* QUIZ */
@@ -188,7 +220,7 @@ let q=0,score=0
 const quiz=[
 {q:"Who loves me more?",o:["Sneha","Bubu","Sonai"],a:[0,1,2]},
 {q:"What I love the most?",o:["irritating sneha","loving sneha","touching sneha","all of these"],a:[3]},
-{q:"Who gets jealous faster?",o:["Sneha","Rishi","Both of them"],a:[2]},
+{q:"Who gets jealous faster?",o:["Sneha","Rishi","Both"],a:[2]},
 {q:"How many kids we want?",o:["4","2","1","69"],a:[2]},
 {q:"How much does Rishi love you?",o:["0%","69%","100%","♾️"],a:[3]}
 ]
@@ -196,41 +228,29 @@ const quiz=[
 function startQuiz(){
 q=0;score=0;nextQ()
 }
-
 function nextQ(){
 let data=quiz[q]
 let html=`<h3>${data.q}</h3>`
-data.o.forEach((opt,i)=>{
-html+=`<button onclick="answer(${i},this)">${opt}</button>`
+data.o.forEach((o,i)=>{
+html+=`<button onclick="ans(${i},this)">${o}</button>`
 })
-document.getElementById('popupContent').innerHTML=html
+popupCard.innerHTML=html
 }
-
-function answer(i,btn){
+function ans(i,b){
 if(quiz[q].a.includes(i)){
-btn.classList.add('correct')
+b.classList.add('correct')
 score++
-burst()
 }
 setTimeout(()=>{
 q++
-if(q<quiz.length)nextQ()
-else{
-showPopup(`Sneha scored ${score}/${quiz.length} 💕<br><br>No matter what your score is<br>You love me the most 😌❤️`)
-}
+q<quiz.length?nextQ():
+openPopup(`
+<h3>Sneha scored ${score}/5 💕</h3>
+<p>No matter what your score is<br>
+You love me the most 😌❤️</p>
+<button onclick="closePopup()">Forever Us 💞</button>
+`)
 },700)
-}
-
-function burst(){
-for(let i=0;i<12;i++){
-let h=document.createElement('div')
-h.className='heart'
-h.innerHTML='❤️'
-h.style.left=Math.random()*100+'vw'
-h.style.top='80vh'
-document.body.appendChild(h)
-setTimeout(()=>h.remove(),4000)
-}
 }
 </script>
 
