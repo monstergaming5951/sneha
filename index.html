@@ -26,22 +26,29 @@ body{
   backdrop-filter: blur(15px);
   box-shadow:0 20px 40px rgba(0,0,0,0.25);
   text-align:center;
+  animation: fadeIn 1s ease forwards;
 }
+@keyframes fadeIn { from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }
 
 h1{color:#ff3366;font-size:2.4rem;margin-bottom:10px;}
 h2{font-weight:400;color:#fff;text-shadow:0 2px 6px rgba(0,0,0,0.2); margin-bottom:20px;}
 
 /* Slider */
-img#slider{
+.slider-wrapper{
   width:100%;
-  height:auto; 
-  max-height:300px;
+  overflow:hidden;
   border-radius:25px;
   box-shadow:0 10px 20px rgba(0,0,0,0.2);
   margin-bottom:20px;
+}
+img#slider{
+  width:100%;
+  height:auto;
+  object-fit:contain; /* full image visible */
+  display:block;
   transition: transform 0.5s ease;
 }
-img#slider:hover{transform: scale(1.05);}
+img#slider:hover{transform:scale(1.05);}
 
 /* Buttons */
 .buttons{
@@ -172,7 +179,9 @@ button{
 <h1>❤️ Sneha ❤️</h1>
 <h2>Will you be my Valentine?</h2>
 
+<div class="slider-wrapper">
 <img id="slider" src="pic1.jpg.jpeg">
+</div>
 
 <div class="buttons">
   <button id="yes">Yes 💖</button>
@@ -262,7 +271,7 @@ function startHeartGame(){
 
 /* QUIZ */
 const quiz=[
-  {q:"Who loves me more?", o:["Sneha","Bubu","Sonai"], c:[0,1,2]}, // ALL correct
+  {q:"Who loves me more?", o:["Sneha","Bubu","Sonai"], c:[0,1,2]}, // all correct
   {q:"What I love the most?", o:["irritating sneha","loving sneha","touching sneha","all of these"], c:[3]},
   {q:"Who gets more jealous faster?", o:["Sneha","Rishi","Both of them"], c:[2]},
   {q:"How many kids we want?", o:["4","2","1","69"], c:[1]},
@@ -281,8 +290,9 @@ function showQuiz(){
 }
 
 function answer(i, btn){
-  const q=quiz[qi];
-  if(q.c.includes(i)) score++; // counts all correct options
+  const q = quiz[qi];
+  if(qi===0){score++;} // first question, any click counts
+  else if(q.c.includes(i)){score++;} // others normal
   btn.classList.add("correct");
   blast(btn);
   setTimeout(()=>{qi++; qi<quiz.length?showQuiz():result();},700);
