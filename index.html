@@ -75,6 +75,7 @@ button{
 
 .action{
   width:100%;
+  margin-top:8px;
   border:2px solid #ff3366;
   background:white;
   color:#ff3366;
@@ -90,6 +91,7 @@ button{
   display:none;
   justify-content:center;
   align-items:center;
+  z-index:10;
 }
 
 .card{
@@ -107,6 +109,25 @@ button{
   color:white;
   padding:10px 28px;
   border-radius:30px;
+}
+
+/* HEART GAME */
+.game-area{
+  position:relative;
+  height:240px;
+  overflow:hidden;
+}
+
+.heart{
+  position:absolute;
+  bottom:-40px;
+  font-size:28px;
+  animation:fly 3s linear forwards;
+  cursor:pointer;
+}
+
+@keyframes fly{
+  to{bottom:260px}
 }
 
 /* QUIZ */
@@ -144,7 +165,7 @@ button{
     <button id="no">No 🙈</button>
   </div>
 
-  <button class="action" id="startGame">Answer honestly 😌</button>
+  <button class="action" id="playGame">Play a little game 🎮</button>
   <p class="footer">Every moment with you feels like a dream come true amar sonai😤</p>
 </div>
 
@@ -178,21 +199,18 @@ function closePopup(){
 }
 
 /* YES */
-document.getElementById("yes").addEventListener("click",()=>{
-  openPopup(`
-    <h3>I knew it Babyyyyy 😭❤️</h3>
-    <p>You are my Valentine - today and always🤧💗</p>
-    <button class="okay" onclick="closePopup()">OKAY</button>
-  `);
-});
+yes.onclick=()=>openPopup(`
+<h3>I knew it Babyyyyy 😭❤️</h3>
+<p>You are my Valentine - today and always🤧💗</p>
+<button class="okay" onclick="closePopup()">OKAY</button>
+`);
 
-/* NO — 2 CLICKS */
+/* NO BUTTON */
 let noClicks=0;
-document.getElementById("no").addEventListener("click",()=>{
+no.onclick=()=>{
   noClicks++;
   if(noClicks===1){
-    document.getElementById("no").style.transform=
-      `translate(${Math.random()*120-60}px,${Math.random()*60-30}px)`;
+    no.style.transform=`translate(${Math.random()*120-60}px,${Math.random()*60-30}px)`;
   }
   if(noClicks===2){
     openPopup(`
@@ -201,7 +219,39 @@ document.getElementById("no").addEventListener("click",()=>{
       <button class="okay" onclick="closePopup()">OKAY</button>
     `);
   }
-});
+};
+
+/* HEART GAME */
+document.getElementById("playGame").onclick=startHeartGame;
+
+function startHeartGame(){
+  let caught=0;
+  openPopup(`
+    <h3>Catch 3 hearts 💖</h3>
+    <p id="count">Hearts: 0 / 3</p>
+    <div class="game-area" id="area"></div>
+  `);
+
+  const area=document.getElementById("area");
+  const counter=document.getElementById("count");
+
+  const spawn=setInterval(()=>{
+    const h=document.createElement("div");
+    h.className="heart";
+    h.innerText="💖";
+    h.style.left=Math.random()*90+"%";
+    h.onclick=()=>{
+      caught++;
+      counter.innerText=\`Hearts: \${caught} / 3\`;
+      h.remove();
+      if(caught===3){
+        clearInterval(spawn);
+        setTimeout(startQuiz,400);
+      }
+    };
+    area.appendChild(h);
+  },700);
+}
 
 /* QUIZ */
 const quiz=[
@@ -214,9 +264,9 @@ const quiz=[
 
 let qi=0,score=0;
 
-document.getElementById("startGame").onclick=()=>{
+function startQuiz(){
   qi=0;score=0;showQ();
-};
+}
 
 function showQ(){
   const q=quiz[qi];
